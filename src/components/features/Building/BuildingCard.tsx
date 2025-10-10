@@ -1,7 +1,7 @@
 import "./BuildingCard.css";
-import type Building from "../../model/Building";
+import type Building from "@/types/building/Building";
 import { useState } from "react";
-import BuildingService from "../../services/BuildingService";
+import BuildingService from "@/services/api/BuildingService";
 
 type BuildingCardProps = {
   building: Building;

@@ -1,6 +1,6 @@
 import type { Vector3 } from "three";
-import { RoutePoint } from "../model/RoutePoint";
-import BuildingService from "./BuildingService";
+import BuildingService from "@/services/api/BuildingService";
+import { RoutePoint } from "@/types/point/RoutePoint";
 
 
 export default class RoutesService {
@@ -34,6 +34,7 @@ export default class RoutesService {
 
           for (const [floorStr, floorPoints] of Object.entries(data)) {
             const floorNum = Number(floorStr);
+            console.log(floorNum);
 
             const floorPointsWithFloor = floorPoints.map((cp) =>
               new RoutePoint(

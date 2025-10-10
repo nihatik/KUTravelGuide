@@ -1,7 +1,7 @@
-import AdminSidePanel from "../../components/AdminSidePanel";
 import { Routes, Route } from "react-router-dom";
-import "../../styles/AdminPage.css";
-import EditorMenu from "./EditorMenu";
+import "@assets/styles/AdminPage.css";
+import EditorPage from "./editor/EditorPage";
+import AdminSidePanel from "@/components/features/Admin/AdminSidePanel";
 
 export default function AdminPage() {
   return (
@@ -11,7 +11,7 @@ export default function AdminPage() {
       <div className="admin-content">
         <Routes>
           <Route path="/" element={<h1>Главная админки</h1>} />
-          <Route path="/editor" element={<EditorMenu />} />
+          <Route path="/editor" element={<EditorPage />} />
         </Routes>
       </div>
     </>

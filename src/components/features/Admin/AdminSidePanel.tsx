@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../styles/AdminSidePanel.css";
+import "@/assets/styles/AdminSidePanel.css";
 
 export default function AdminSidePanel() {
   return (

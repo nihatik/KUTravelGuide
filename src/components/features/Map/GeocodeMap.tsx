@@ -1,9 +1,9 @@
 import { Map, Placemark } from '@pbe/react-yandex-maps';
 import styled from 'styled-components';
-import BuildingDataManager from '../../services/BuildingService';
-import GeoService from '../../services/GeoService';
+import BuildingDataManager from '@/services/api/BuildingService';
+import GeoService from '@/services/api/GeoService';
 import { useEffect, useRef, useState } from 'react';
-import BuildingService from '../../services/BuildingService';
+import BuildingService from '@/services/api/BuildingService';
 
 const MapStyled = styled(Map)`
   width: 100%;

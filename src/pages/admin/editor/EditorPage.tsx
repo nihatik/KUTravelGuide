@@ -1,36 +1,36 @@
 
 import { useEffect, useRef, useState } from "react";
-import FileInput from "../../components/base/fileinput/FileInput";
-import "../../styles/EditorMenu.css";
-import Dropdown from "../../components/base/dropdown/Dropdown";
-import EditorBtn from "../../components/custom/EditorBtn";
-import BuildingService from "../../services/BuildingService";
-import { RoutePoint } from "../../model/RoutePoint";
-import { PlanPoint } from "../../model/PlanPoint";
-import TableInner from "../../components/custom/DataTable";
-import Building from "../../model/Building";
-import type { BasePoint } from "../../model/BasePoint";
-import EditorDataManager from "../../services/EditorDataManager";
+import FileInput from "@/components/ui/FileInput/FileInput";
+import "@/assets/styles/EditorMenu.css";
+import Dropdown from "@/components/ui/Dropdown/Dropdown";
+import EditorBtn from "@/components/features/Admin/EditorBtn";
+import BuildingService from "@/services/api/BuildingService";
+import { RoutePoint } from "@/types/point/RoutePoint";
+import { PlanPoint } from "@/types/point/PlanPoint";
+import TableInner from "@/components/features/Data/DataTable";
+import Building from "@/types/building/Building";
+import type { BasePoint } from "@/types/point/BasePoint";
+import EditorDataManager from "@/services/EditorDataManager";
 
 const CELL_SIZE = 3;
 
-const images = import.meta.glob("../../../assets/buildings/*.{png,jpg,jpeg,webp}", { eager: true });
+const images = import.meta.glob("@/assets/images/buildings/*.{png,jpg,jpeg,webp}", { eager: true });
 const imagePaths = Object.values(images).map((img: any) => img.default);
 
-export default function EditorMenu() {
+export default function EditorPage() {
     const [showData, setShowData] = useState<boolean>();
 
     const [buildingFloorNum, setBuildingFloorNum] = useState(1);
     const [activeBuilding, setSelectedBuilding] = useState<Building>(BuildingService.buildings[0]);
 
-    const [activeData, setActiveData] = useState<any[]>([]);
+    const [activeData] = useState<any[]>([]);
     const [activeId, setActiveId] = useState<string | null>(null);
 
     const [imgSrc, setImgSrc] = useState<string | null>(null);
     const imgRef = useRef<HTMLImageElement>(null);
 
 
-    const [highlightedIds, setHighlightedIds] = useState<number[]>([]);
+    const [highlightedIds] = useState<number[]>([]);
 
     const editorBtnClick = (btn: any) => {
         if (btn.condition) {
@@ -61,9 +61,9 @@ export default function EditorMenu() {
 
     useEffect(() => {
         if (mode == "plan") {
-            EditorDataManager.setActiveData(activeBuilding, activeBuilding.planPoints);
+            EditorDataManager.setActiveData(activeBuilding.planPoints);
         } else if (mode == "routes") {
-            EditorDataManager.setActiveData(activeBuilding, activeBuilding.routePoints);
+            EditorDataManager.setActiveData(activeBuilding.routePoints);
         }
     })
 

@@ -1,17 +1,16 @@
 import { YMaps } from '@pbe/react-yandex-maps';
-import "../styles/YMap.css";
-import GeocodeMap from '../components/layouts/geocode-map';
-import RightPanel from '../components/RightPanel';
+import "@/assets/styles/YMap.css";
+import GeocodeMap from '@/components/features/Map/GeocodeMap';
+import RightPanel from '@/components/RightPanel';
 import { useRef, useState, useMemo, useEffect } from 'react';
-import CampusMap from '../components/BuildingMap';
-import BuildingService from '../services/BuildingService';
-import BuildingCard from '../components/custom/BuildingCard';
-import '../styles/LeftPanel.css';
-import TabsBox from '../components/base/tabsbox/TabsBox';
-import Tab from '../components/base/tabsbox/Tab';
-import type Building from '../model/Building';
-import { faBarsStaggered, faBookmark,faFire, faHistory, faMap, faSearch, faUniversity } from '@fortawesome/free-solid-svg-icons';
-import "../styles/Main.css";
+import CampusMap from '@/components/features/Building/BuildingMap';
+import BuildingService from '@/services/api/BuildingService';
+import BuildingCard from '@/components/features/Building/BuildingCard';
+import '@/assets/styles/LeftPanel.css';
+import { TabsBox, Tab } from '@/components/ui/TabsBox';
+import type Building from '@/types/building/Building';
+import { faBarsStaggered, faBookmark, faFire, faHistory, faMap, faSearch, faUniversity } from '@fortawesome/free-solid-svg-icons';
+import "@/assets/styles/Main.css";
 
 export default function Get() {
   const allBuildings = BuildingService.getAll();
@@ -31,7 +30,7 @@ export default function Get() {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setActiveBuilding(BuildingService.activeBuilding)
   }, [BuildingService.activeBuilding])
 

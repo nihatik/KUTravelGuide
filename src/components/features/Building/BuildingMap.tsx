@@ -1,13 +1,12 @@
 import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Line, Billboard } from "@react-three/drei";
-import "../styles/BuildingMap.css";
-import RoutesService from "../services/RoutesService";
+import "./BuildingMap.css";
+import RoutesService from "@/services/api/RoutesService";
 import type { Vector3 } from "three";
-import type { RoutePoint } from "../model/RoutePoint";
-import type { PlanPoint } from "../model/PlanPoint";
-import BuildingService from "../services/BuildingService";
-import GeoService from "../services/GeoService";
+import type { RoutePoint } from "@/types/point/RoutePoint";
+import type { PlanPoint } from "@/types/point/PlanPoint";
+import BuildingService from "@/services/api/BuildingService";
 
 type BuildingMapProps = { points?: PlanPoint[]; onAddPointByClick?: (point: PlanPoint) => void };
 
@@ -28,23 +27,14 @@ function WallBetweenPoints({ start, end }: { start: PlanPoint; end: PlanPoint })
   );
 }
 
-const BuildingMap = forwardRef(({ points: controlledPoints, onAddPointByClick }: BuildingMapProps, ref) => {
+const BuildingMap = forwardRef(({ points: controlledPoints }: BuildingMapProps, ref) => {
+  controlledPoints = [];
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const [currentPos, setCurrentPos] = useState<{ x: number; z: number } | null>(null);
-
-  const [points, setPoints] = useState<PlanPoint[]>(controlledPoints ?? []);
 
   const [startPos, setStartPos] = useState<Vector3>();
 
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<number | null>(null);
   const controlsRef = React.useRef<any>(null);
-
-  useEffect(() => {
-    GeoService.getCurrentPosition()
-      .then(pos => setCurrentPos({ x: pos.longitude, z: pos.latitude }))
-      .catch(err => console.error(err));
-  }, []);
 
   useEffect(() => {
     BuildingService.init().then(() =>
@@ -54,9 +44,6 @@ const BuildingMap = forwardRef(({ points: controlledPoints, onAddPointByClick }:
 
   const handleCheckpointClick = (id: number) => {
     setSelectedCheckpoint(id);
-  };
-
-  const handleMapRightClick = (point: Vector3) => {
   };
 
   useImperativeHandle(ref, () => ({
@@ -73,14 +60,6 @@ const BuildingMap = forwardRef(({ points: controlledPoints, onAddPointByClick }:
       }
     },
   }));
-
-  const initialCameraPos = [50, 150, 50];
-
-  useEffect(() => {
-    if (controlsRef.current) {
-    }
-  }, [points]);
-
 
 
   let routePoints: [number, number, number][] = [];

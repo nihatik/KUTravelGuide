@@ -1,6 +1,6 @@
-import Building from "../model/Building";
-import { BuildingType } from "../model/BuildingType";
-import { PlanPoint } from "../model/PlanPoint";
+import Building from "@/types/building/Building";
+import { BuildingType } from "@/types/building/BuildingType";
+import { PlanPoint } from "@/types/point/PlanPoint";
 
 
 export default class BuildingService {

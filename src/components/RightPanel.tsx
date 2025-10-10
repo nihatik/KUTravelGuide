@@ -1,4 +1,4 @@
-import "../styles/RightPanel.css";
+import "@/assets/styles/RightPanel.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 

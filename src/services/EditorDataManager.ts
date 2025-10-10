@@ -1,10 +1,9 @@
-import { RoutePoint } from "../model/RoutePoint";
-import type { DestinationPoint } from "../model/DestinationPoints";
-import { PlanPoint } from "../model/PlanPoint";
-import type { BasePoint } from "../model/BasePoint";
-import type Building from "../model/Building";
-import RoutesService from "./RoutesService";
-import { Utils } from "./Utils";
+import { RoutePoint } from "@/types/point/RoutePoint";
+import type { DestinationPoint } from "@/types/point/DestinationPoints";
+import { PlanPoint } from "@/types/point/PlanPoint";
+import type { BasePoint } from "@/types/point/BasePoint";
+import RoutesService from "./api/RoutesService";
+import { Utils } from "@/utils/Utils";
 
 export default class EditorDataManager {
     public static activeData: BasePoint[] = [];
@@ -25,7 +24,7 @@ export default class EditorDataManager {
         );
     }
 
-    public static setActiveData(building: Building, data: BasePoint[]): BasePoint[] {
+    public static setActiveData(data: BasePoint[]): BasePoint[] {
         if (!data.length) return [];
 
         if (data[0] instanceof RoutePoint) {

@@ -1,8 +1,8 @@
 
 import type { BuildingType } from "./BuildingType";
-import type { DestinationPoint } from "./DestinationPoints";
-import type { PlanPoint } from "./PlanPoint";
-import type { RoutePoint } from "./RoutePoint";
+import type { DestinationPoint } from "@/point/DestinationPoints";
+import type { PlanPoint } from "@/point/PlanPoint";
+import type { RoutePoint } from "@/point/RoutePoint";
 
 export default class Building {
   constructor(

@@ -1,4 +1,4 @@
-import type { DestinationPoint } from "../model/DestinationPoints";
+import type { DestinationPoint } from "@/types/point/DestinationPoints";
 import BuildingService from "./BuildingService";
 
 export default class DestinationService {

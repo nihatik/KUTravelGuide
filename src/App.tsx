@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BaseLayout from "./components/layouts/BaseLayout";
-import AdminLayout from "./components/layouts/AdminLayout";
-import Main from "./pages/Main";
+import AdminLayout from "./components/features/Admin/AdminLayout";
+import Main from "./pages/main/Main";
 import AdminPage from "./pages/admin/AdminPage";
-import BuildingMap from "./components/BuildingMap";
+import BuildingMap from "./components/features/Building/BuildingMap";
 
 function App() {
   return (
