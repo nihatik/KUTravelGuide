@@ -1,0 +1,45 @@
+.ktg-toolbar {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.ktg-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ktg-btn.secondary { background: #4b5563; }
+.ktg-btn.green { background: #16a34a; }
+.ktg-btn.danger { background: #dc2626; }
+
+.row { display: flex; }
+.gap12 { gap: 12px; }
+.center { align-items: center; }
+.space-between { justify-content: space-between; }
+.grow { flex: 1; }
+.muted { color: #6b7280; }
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 12px;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.nodes-table table {
+  width: 100%;
+}
+
+

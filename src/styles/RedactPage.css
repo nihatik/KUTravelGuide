@@ -1,0 +1,56 @@
+.redact-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.redact-title {
+  text-align: left;
+}
+
+.redact-map {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.redact-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.redact-table th,
+.redact-table td {
+  border: 1px solid #e5e7eb;
+}
+
+.redact-form {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.redact-form input {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.redact-actions {
+  margin-top: 20px;
+}
+
+.redact-btn {
+  padding: 10px 16px;
+  background: #00645c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.redact-btn:hover {
+  background: #0b3a36;
+}
+
+

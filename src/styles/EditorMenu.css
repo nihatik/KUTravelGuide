@@ -1,0 +1,102 @@
+.redact-content {
+    width: 100vw;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.top-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    height: 80px;
+    padding: 8px;
+    background-color: rgb(79, 79, 79);
+    z-index: 1;
+}
+
+.redact-panel-container {
+    flex: 1;
+    display: flex;
+    background: #767676;
+    overflow: auto;
+    position: relative;
+}
+
+.redact-panel {
+    flex: 1;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.redact-content {
+    color: white !important;
+}
+
+.image-gallery {
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 0 8px 0;
+}
+
+.image-gallery>div {
+    min-height: max-content;
+    width: 640px;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.image-gallery>div:hover .shadow {
+    opacity: 0.6;
+}
+
+.image-gallery>div:hover span {
+    opacity: 1;
+}
+
+
+.image-gallery>div img {
+    width: 100%;
+    transition: opacity 0.3s;
+}
+
+.image-gallery>div span {
+    opacity: 0;
+    position: absolute;
+    left: 23%;
+    top: 50%;
+}
+
+.image-gallery>div .shadow {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    background: rgb(0, 0, 0);
+    height: 100%;
+    transition: opacity 0.3s;
+}
+
+@media (max-width: 1360px),
+(min-width: 2560px) {
+    .redact-content {
+        display: none;
+    }
+}

@@ -1,0 +1,25 @@
+#buildingSearch{
+    border: none;
+    outline: none;
+    position: relative;
+    box-shadow: none;
+    transition: 0.3s;
+    font-size: 14px;
+    padding: 8px 8px 8px 16px;
+    height: 64px;
+    width: 100%;
+}
+
+
+.tabs-content.active #buildingSearch{
+    z-index: 1;
+}
+
+.tabs-content{
+    transition: 0.3s;
+    margin-top: -65px;
+}
+
+.tabs-content.active {
+    margin-top: 0px;
+}

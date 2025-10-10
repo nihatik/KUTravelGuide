@@ -1,0 +1,147 @@
+:root {
+  --main-color: #ffffff;
+  --kutg-color: #1996a7;
+  --kutg-color-for-rgba: 25, 150, 167;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.fa-big{
+  width: 24px;
+  height: 20px;
+}
+
+.fa32{
+  width: 32px;
+  height: 28px;
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button,
+a,
+input,select {
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+
+}
+
+#root {
+  padding: 0px 8px !important;
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#root:has(#admin) {
+  padding: 0 !important;
+}
+
+#main {
+  margin-top: 80px;
+}
+
+#main:has(#map),
+#main:has(.map-container) {
+  margin-top: 0;
+}
+
+#admin {
+  display: flex;
+  height: 100vh;
+  width: 100%
+}
+
+#logo {
+  font-weight: 700;
+  font-size: 24px;
+}
+
+a {
+  font-weight: 600;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+/* moved to CampusMap.css */
+
+a,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+select {
+  width: 240px;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+
+.row {
+  display: flex;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.center {
+  align-items: center;
+}
+
+.centerX{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gap8 {
+  gap: 8px;
+}
+
+.gap12 {
+  gap: 12px;
+}
+
+.ktg-btn{
+  width: 200px;
+  height: 48px;
+  padding: 4px;
+  border-radius: 12px;
+  border: none;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+.green{
+  background-color: #1b8900;
+  color: white;
+}
+.ktg-btn:hover{
+  transform: scale(1.05);
+}

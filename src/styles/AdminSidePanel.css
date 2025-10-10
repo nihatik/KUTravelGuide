@@ -1,0 +1,50 @@
+.admin-sidepanel {
+    width: 260px;
+    background: #2c3e50;
+    color: white;
+    padding: 0.5rem;
+}
+
+.admin-sidepanel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-sidepanel ul a{
+    font-size: 16px;
+}
+
+.admin-sidepanel li {
+    margin: 0.5rem 0;
+}
+
+.admin-sidepanel li div {
+    text-align: center;
+    line-height: 48px;
+    width: 100%;
+    background: #00645c;
+    height: 48px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.admin-sidepanel li div:hover{
+    background: #111;
+    
+}
+.admin-sidepanel a {
+    color: white;
+    text-decoration: none;
+}
+
+.admin-sidepanel nav{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+
+.admin:has(.redact-content) .admin-sidepanel{
+  display: none;
+}

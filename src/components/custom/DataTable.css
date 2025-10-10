@@ -1,0 +1,29 @@
+
+#dataTableContainer{
+    height: 98%;
+    top: 1%;
+    left: 0.5%;
+    width: 100%;
+}
+
+.data-table{
+    width: 280px;
+    padding: 4px;
+    position: absolute;
+    background-color: rgba(88, 88, 88);
+    border-radius: 16px;
+    z-index: 2;
+    transition: 0.3s;
+    font-size: 14px;
+}
+.data-table tr{
+    height: 28px;
+}
+
+.data-table th,td{
+    height: 28px;
+}
+
+.node{
+    transition: 0.3s;
+}

@@ -1,0 +1,13 @@
+.admin-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  height: 100%;
+
+  scrollbar-width: none;
+}
+
+.admin-content::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
