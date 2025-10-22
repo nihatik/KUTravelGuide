@@ -5,10 +5,10 @@ export default class DestinationService {
   public static points: DestinationPoint[] = [];
 
   public static async init() {
-    await this.loadPoints();
+    await this.loadData();
   }
 
-  public static async loadPoints(): Promise<void> {
+  public static async loadData(): Promise<void> {
     this.points = [];
     for (const building of BuildingService.getAll()) {
       if (building.keyPath) {
@@ -18,7 +18,6 @@ export default class DestinationService {
 
           if (!res.ok) {
             if (res.status === 404) {
-              building.planPoints = [];
               continue;
             } else {
               throw new Error(`Ошибка загрузки: ${res.statusText}`);
@@ -29,18 +28,14 @@ export default class DestinationService {
 
 
           for (const [floorStr, floorPoints] of Object.entries(data)) {
-            const floorNum = Number(floorStr);
+          const floorNum = Number(floorStr) - 1;
 
             const floorPointsWithFloor = floorPoints.map((cp: DestinationPoint) => ({
               ...cp,
               floor: floorNum,
-              position: {
-                x: cp.x,
-                z: cp.z,
-              },
+              x: cp.x,
+              z: cp.z,
             }));
-
-            this.points.push(...floorPointsWithFloor);
           }
 
         } catch (err) {

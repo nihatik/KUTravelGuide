@@ -1,22 +1,24 @@
 import Building from "@/types/building/Building";
 import { BuildingType } from "@/types/building/BuildingType";
+import Floor from "@/types/building/Floor";
 import { PlanPoint } from "@/types/point/PlanPoint";
 
 
 export default class BuildingService {
 
   public static activeBuilding: Building;
+  public static activeFloor: Floor;
 
   public static buildings: Building[] = [
-    new Building(0, "1 Корпус", BuildingType.Campus, [54.8783257, 69.134562], "Абая Кунанбаева, 18", "", "1", [], [], [], 2),
-    new Building(1, "2 Корпус", BuildingType.Campus, [54.8776746, 69.132845], "", "", "2", [], [], [], 2),
-    new Building(2, "4 Корпус", BuildingType.Campus, [54.8761899, 69.131980], "", "", "4", [], [], [], 4),
-    new Building(3, "5 Корпус", BuildingType.Campus, [54.8753436, 69.133293], "", "", "5", [], [], [], 4),
-    new Building(4, "6 Корпус", BuildingType.Campus, [54.8751475, 69.134857], "", "", "6", [], [], [], 4),
-    new Building(5, "10 Корпус", BuildingType.Campus, [54.8769555, 69.133369], "", "", "", [], [], [], 0),
-    new Building(6, "УЛК", BuildingType.Campus, [0, 0], "Александра Пушкина, 86Б", "", "ulk", [], [], [], 10),
-    new Building(7, "Общежитие 1", BuildingType.Dormitory, [54.8779410, 69.130018], "", "", "", [], [], [], 1),
-    new Building(8, "Winston | Столовая", BuildingType.Eatery, [54.8763896, 69.132708], "", "", "", [], [], [], 1)
+    new Building(0, "1 корпус", BuildingType.Campus, [54.8783257, 69.134562], "Абая Кунанбаева, 18", "", "1", [], 2),
+    new Building(1, "2 корпус", BuildingType.Campus, [54.8776746, 69.132845], "", "", "2", [], 2),
+    new Building(2, "4 корпус", BuildingType.Campus, [54.8761899, 69.131980], "", "", "4", [], 4),
+    new Building(3, "5 корпус", BuildingType.Campus, [54.8753436, 69.133293], "", "", "5", [], 4),
+    new Building(4, "6 корпус", BuildingType.Campus, [54.8751475, 69.134857], "", "", "6", [], 4),
+    new Building(5, "10 корпус", BuildingType.Campus, [54.8769555, 69.133369], "", "", "", [], 0),
+    new Building(6, "УЛК", BuildingType.Campus, [0, 0], "Александра Пушкина, 86Б", "", "ulk", [], 10),
+    new Building(7, "Общежитие 1", BuildingType.Dormitory, [54.8779410, 69.130018], "", "", "", [], 1),
+    new Building(8, "Winston | Столовая", BuildingType.Eatery, [54.8763896, 69.132708], "", "", "", [], 1)
   ];
 
   public static async init() {
@@ -58,7 +60,13 @@ export default class BuildingService {
               )
           );
 
-          building.planPoints.push(...floorPointsWithFloor);
+          console.log("LOADING: ", building.name, floorNum);
+
+          const floorIndex = floorNum - 1;
+          if (building.floors[floorIndex] == null) {
+            building.floors[floorIndex] = new Floor(floorNum, [], [], [], []);
+          }
+          building.floors[floorIndex].planPoints.push(...floorPointsWithFloor);
         }
       } catch (err) {
         console.error(`Ошибка загрузки точек (${building.name}):`, err);
@@ -68,7 +76,18 @@ export default class BuildingService {
 
   public static setActiveById(id: number) {
     const building = this.getById(id);
-    if (building) this.activeBuilding = building;
+    if (building) {
+      this.setActive(building);
+    }
+  }
+
+
+  public static setActive(building: Building) {
+    this.activeBuilding = building;
+    this.activeFloor = building.floors[0];
+
+    console.log(this.buildings);
+    console.log(this.activeBuilding, this.activeFloor);
   }
 
   public static getById(id: number): Building | null {

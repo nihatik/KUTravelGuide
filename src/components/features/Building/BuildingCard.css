@@ -1,16 +1,15 @@
 .building-card {
     width: 100%;
-    height: 120px;
+    height: 150px;
     border: 1px solid transparent;
     text-align: center;
     transition: 0.3s;
     cursor: pointer;
     flex-direction: row-reverse;
-    justify-content: space-between;
-    padding: 8px;
+    padding: 8px 8px 8px 16px;
     display: none;
     opacity: 1;
-    animation: result-hide 0.4s ease-in;
+    gap: 8px;
 }
 
 .building-card:hover {
@@ -20,28 +19,33 @@
 .building-card.show {
     display: flex;
     opacity: 1;
-    animation: result-show 0.4s ease-in;
 }
 
 .building-card.active {
     height: 100%;
     flex-direction: column;
+    cursor: default !important;
+    background: rgba(var(--kutg-color-for-rgba), 0.025);
+}
+
+.building-card.active:hover {
+    background: rgba(var(--kutg-color-for-rgba), 0.025);
+}
+
+li.building-card {
+    list-style: none;
 }
 
 
-
-.building-card img {
-    border-radius: 16px;
+.building-card>img {
+    border-radius: 18px;
     object-fit: cover;
-    width: 120px;
+    width: 180px;
+    min-width: 180px;
     transition: 0.4s ease-in-out;
 }
 
-.building-card:hover img {
-    width: 240px;
-}
-
-.building-card.active img {
+.building-card.active>img {
     width: 100%;
     border-radius: 16px;
 }
@@ -56,20 +60,59 @@
 }
 
 
-.building-card-text {
+.building-card-right {
     text-align: left;
-    padding: 8px;
+    width: 100%;
+    justify-content: space-between;
 }
 
-.builing-card-text-head {
+.building-card-text-head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.building-card-text-head p {
+    color: rgb(0, 0, 0, 0.9);
+    font-size: 1.075rem;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+.building-card-text-head img {
+    width: 16px;
+    height: 16px;
+}
+
+.building-card-text-street {
+    color: rgb(0, 0, 0, 0.7);
+    font-size: 0.825rem;
+    font-weight: 400;
+}
+
+.building-card-right-bottom {
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 400;
     margin-bottom: 4px;
 }
 
-.builing-card-text-street {
-    opacity: 0.5;
-    font-size: 12px;
+.building-card-floor-count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 400;
+    color: rgb(0, 0, 0, 0.7);
 }
 
+.building-card-working-hours {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: rgb(0, 0, 0, 0.7);
+}
 
 .building-card-active .join-button {
     width: 160px;
@@ -112,4 +155,17 @@
         height: 0;
         display: none;
     }
+}
+
+.final-point {
+    margin-top: 8px;
+    padding: 8px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.final-point:hover {
+    background: #d0d0d0;
 }

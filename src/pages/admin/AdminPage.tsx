@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import "@assets/styles/AdminPage.css";
 import EditorPage from "./editor/EditorPage";
 import AdminSidePanel from "@/components/features/Admin/AdminSidePanel";
+import BuildingsAdminPage from "@/pages/admin/buildings/BuildingsAdminPage";
 
 export default function AdminPage() {
   return (
@@ -12,6 +13,7 @@ export default function AdminPage() {
         <Routes>
           <Route path="/" element={<h1>Главная админки</h1>} />
           <Route path="/editor" element={<EditorPage />} />
+          <Route path="/buildings" element={<BuildingsAdminPage />} />
         </Routes>
       </div>
     </>

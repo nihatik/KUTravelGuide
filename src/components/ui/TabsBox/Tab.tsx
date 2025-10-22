@@ -21,10 +21,11 @@ export default function Tab({ id, label, icon, isActive, onSelect }: TabProps) {
             key={id}
             className={`tab-btn ${isActive ? "active" : ""}`}
             onClick={handleClick}
+            id= {id + "-tab-btn" }
             type="button"
         >
-            {icon && <FontAwesomeIcon className="fa-big" icon={icon} style={{color: 'var(--kutg-color)'}} />}
-            <span className={ isActive && id === "search" ? "active" : ""}>{label}</span>
+            {icon && <FontAwesomeIcon className="fa-big" icon={icon} style={{ color: 'var(--kutg-color)' }} />}
+            <span className={isActive && id === "main" ? "active" : ""}>{label}</span>
         </button>
     );
 }

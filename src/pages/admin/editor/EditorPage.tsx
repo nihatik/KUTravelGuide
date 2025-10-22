@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import FileInput from "@/components/ui/FileInput/FileInput";
 import "@/assets/styles/EditorMenu.css";
@@ -11,6 +10,8 @@ import TableInner from "@/components/features/Data/DataTable";
 import Building from "@/types/building/Building";
 import type { BasePoint } from "@/types/point/BasePoint";
 import EditorDataManager from "@/services/EditorDataManager";
+import RoutesService from "@/services/api/RoutesService";
+import type Floor from "@/types/building/Floor";
 
 const CELL_SIZE = 3;
 
@@ -18,31 +19,28 @@ const images = import.meta.glob("@/assets/images/buildings/*.{png,jpg,jpeg,webp}
 const imagePaths = Object.values(images).map((img: any) => img.default);
 
 export default function EditorPage() {
-    const [showData, setShowData] = useState<boolean>();
+    const [showData, setShowData] = useState<boolean>(false);
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-    const [buildingFloorNum, setBuildingFloorNum] = useState(1);
-    const [activeBuilding, setSelectedBuilding] = useState<Building>(BuildingService.buildings[0]);
+    const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(BuildingService.buildings?.[0] ?? null);
+    const [selectedFloor, setSelectedFloor] = useState<Floor | null>(BuildingService.buildings?.[0].floors[0] ?? null);
 
-    const [activeData] = useState<any[]>([]);
+    const [activeData, setActiveData] = useState<BasePoint[]>(() => EditorDataManager.activeData.slice());
     const [activeId, setActiveId] = useState<string | null>(null);
+
+    useEffect(() => {
+        BuildingService.init().then(() =>
+            RoutesService.init().then(() => setIsLoaded(true))
+        );
+    }, [RoutesService]);
 
     const [imgSrc, setImgSrc] = useState<string | null>(null);
     const imgRef = useRef<HTMLImageElement>(null);
 
-
     const [highlightedIds] = useState<number[]>([]);
+    const [draggedNode, setDraggedNode] = useState<BasePoint | null>(null);
 
-    const editorBtnClick = (btn: any) => {
-        if (btn.condition) {
-            setActiveId(btn.id)
-        } else {
-            switch (btn.id) {
-                case "saveData": exportData(); break;
-                case "showData": setShowData(!showData); break;
-            }
-        }
-
-    };
+    const [mode, setMode] = useState<"plan" | "routes" | "points">("plan");
 
     const conditionButtons = [
         { id: "add", label: "Добавить", condition: true },
@@ -55,34 +53,65 @@ export default function EditorPage() {
         { id: "saveData", label: "Сохранить данные", condition: false },
     ];
 
-    const [draggedNode, setDraggedNode] = useState<BasePoint | null>(null);
+    useEffect(() => {
+        if (!selectedFloor) return;
+        console.log(selectedFloor)
 
-    const [mode, setMode] = useState<"plan" | "routes" | "points">("plan");
+        if (mode === "plan") {
+            const arr = EditorDataManager.setActiveData(selectedFloor.planPoints ?? []);
+            setActiveData(EditorDataManager.activeData.slice());
+        } else if (mode === "routes") {
+            const arr = EditorDataManager.setActiveData(selectedFloor.routePoints ?? []);
+            setActiveData(EditorDataManager.activeData.slice());
+        } else if (mode === "points") {
+            const arr = EditorDataManager.setActiveData(selectedFloor.destinationPoints ?? []);
+            setActiveData(EditorDataManager.activeData.slice());
+        }
+        setActiveId(null);
+    }, [mode, selectedBuilding]);
 
     useEffect(() => {
-        if (mode == "plan") {
-            EditorDataManager.setActiveData(activeBuilding.planPoints);
-        } else if (mode == "routes") {
-            EditorDataManager.setActiveData(activeBuilding.routePoints);
-        }
-    })
+        if (!selectedBuilding) return;
+        const key = `${selectedBuilding.keyPath}_${selectedFloor?.number}`;
+        const found = imagePaths.find((value) => (value as string).includes(key));
+        setImgSrc(found ?? null);
+    }, [selectedBuilding, selectedFloor]);
 
-    useEffect(() => {
-        if (activeBuilding) {
-            setImgSrc(imagePaths.find(value => value.includes(activeBuilding.keyPath + "_" + buildingFloorNum)))
+    const editorBtnClick = (btn: any) => {
+        if (btn.condition) {
+            setActiveId(btn.id);
+        } else {
+            switch (btn.id) {
+                case "saveData":
+                    exportData();
+                    break;
+                case "showData":
+                    setShowData((s) => !s);
+                    break;
+            }
         }
-    }, [activeBuilding, buildingFloorNum]);
+    };
 
     const selectBuilding = (e: any) => {
         const selectValue = e.target.value;
-        const result: Building | undefined = BuildingService.buildings.find((building) => building.keyPath.toString() === selectValue)
+        const result: Building | undefined = BuildingService.buildings.find((building) => String(building.keyPath) === String(selectValue));
         if (result) {
+            BuildingService.setActive(result);
             setSelectedBuilding(result);
-        };
+            setSelectedFloor(result.floors[0]);
+            setTimeout(() => {
+                if (mode === "plan") EditorDataManager.setActiveData(selectedFloor?.planPoints ?? []);
+                if (mode === "routes") EditorDataManager.setActiveData(selectedFloor?.routePoints ?? []);
+                setActiveData(EditorDataManager.activeData.slice());
+            }, 0);
+        }
     };
     const selectBuildingFloor = (e: any) => {
-        const selectValue = e.target.value;
-        setBuildingFloorNum(Number(selectValue));
+        const selectValue = Number(e.target.value);
+        if (selectedBuilding) {
+            setSelectedFloor(selectedBuilding.floors[selectValue]);
+            console.log(selectedFloor)
+        }
     };
 
     const handleImage = (img: any) => {
@@ -94,6 +123,7 @@ export default function EditorPage() {
         reader.onload = (ev) => setImgSrc(ev.target?.result as string);
         reader.readAsDataURL(file);
     };
+
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (!imgRef.current) return;
         const rect = imgRef.current.getBoundingClientRect();
@@ -103,21 +133,29 @@ export default function EditorPage() {
         const xCell = Math.floor(xClick / CELL_SIZE);
         const zCell = Math.floor(zClick / CELL_SIZE);
         const tolerance = 1;
-        if (activeId == "add") {
-            let newValue;
+        if (activeId === "add") {
+            let newValue: any = null;
             if (mode === "routes") {
-                newValue = new RoutePoint(EditorDataManager.activeData.length, xCell, zCell, [],);
-            }
-            else if (mode === "plan") {
-                newValue = new PlanPoint(EditorDataManager.activeData.length, xCell, zCell, EditorDataManager.activeData.length - 1, buildingFloorNum)
+                newValue = new RoutePoint(EditorDataManager.activeData.length, xCell, zCell, []);
+            } else if (mode === "plan") {
+                newValue = new PlanPoint(EditorDataManager.activeData.length, xCell, zCell, EditorDataManager.activeData.length - 1, selectedFloor?.number ?? 0);
+            } else if (mode === "points") {
+                newValue = {
+                    id: EditorDataManager.activeData.length,
+                    x: xCell,
+                    z: zCell,
+                };
             }
             if (newValue) {
                 EditorDataManager.activeData.push(newValue);
+                setActiveData(EditorDataManager.activeData.slice());
             }
         } else if (activeId === "remove") {
             EditorDataManager.removePointNear(xCell, zCell, tolerance);
+            setActiveData(EditorDataManager.activeData.slice());
         }
-    }
+    };
+
     const handleMouseMove = (e: React.MouseEvent) => {
         if (!draggedNode || !imgRef.current || activeId !== "drag") return;
 
@@ -129,17 +167,18 @@ export default function EditorPage() {
         const zCell = Math.floor(zClick / CELL_SIZE);
 
         EditorDataManager.updatePoint(draggedNode.id, xCell, zCell);
+        setActiveData(EditorDataManager.activeData.slice());
     };
 
-    const handleMouseUp = () => setDraggedNode(null);
+    const handleMouseUp = () => {
+        setDraggedNode(null);
+    };
 
     const exportData = () => {
         const shifted = activeData.map((cp: any) => ({
             ...cp,
-            position: {
-                x: cp.position.x / 10,
-                z: cp.position.z / 10,
-            },
+            x: (cp.x ?? (cp.position?.x ?? 0)) / 10,
+            z: (cp.z ?? (cp.position?.z ?? 0)) / 10,
         }));
 
         const blob = new Blob([JSON.stringify(shifted, null, 2)], {
@@ -150,6 +189,7 @@ export default function EditorPage() {
         link.href = url;
         link.download = `${mode}.json`;
         link.click();
+        URL.revokeObjectURL(url);
     };
 
     return (
@@ -175,13 +215,13 @@ export default function EditorPage() {
                             />
                         </div>
                     </>
-
                 )}
 
                 {imgSrc && (
                     <>
                         {showData && activeData != null && activeData.length > 0 && (
-                            <TableInner id="routes"
+                            <TableInner
+                                id="routes"
                                 headValues={Object.keys(activeData[0])}
                                 values={activeData.map(node =>
                                     Object.keys(node).map(key => {
@@ -194,21 +234,23 @@ export default function EditorPage() {
                         )}
                         <div className="column" style={{ height: "100vh", width: "100%" }}>
                             <div className="top-panel">
-
-                                <select id="floor-select" onChange={selectBuildingFloor} defaultValue="1">
-                                    {Array.from({ length: activeBuilding.floorCount }, (_, i) => (
-                                        <option key={i + 1} value={i + 1}>
-                                            {i + 1} этаж
-                                        </option>
-                                    ))}
+                                <select id="floor-select" onChange={selectBuildingFloor} value={String(selectedFloor != null ? selectedFloor?.number : 1)}>
+                                    {selectedBuilding
+                                        ? Array.from({ length: selectedBuilding.floorCount }, (_, i) => (
+                                            <option key={i + 1} value={i + 1}>
+                                                {i + 1} этаж
+                                            </option>
+                                        ))
+                                        : <option>1 этаж</option>}
                                 </select>
-                                <select id="building-select" onChange={selectBuilding} defaultValue="6">
+                                <select id="building-select" onChange={selectBuilding} value={selectedBuilding?.keyPath ?? ""}>
                                     {BuildingService.buildings.map(building => (
-                                        <option value={building.keyPath}>{building.name}</option>
+                                        <option key={building.id} value={building.keyPath}>{building.name}</option>
                                     ))}
                                 </select>
                                 {conditionButtons.map(btn => (
                                     <EditorBtn
+                                        key={btn.id}
                                         id={btn.id}
                                         label={btn.label}
                                         active={activeId === btn.id}
@@ -246,7 +288,7 @@ export default function EditorPage() {
                                                 height: "auto",
                                                 width: "100%",
                                                 display: "block",
-                                                cursor: draggedNode ? "grabbing" : "crosshair",
+                                                cursor: draggedNode ? "grabbing" : (activeId === "drag" ? "grab" : "crosshair"),
                                             }}
                                         />
                                         <div
@@ -262,18 +304,20 @@ export default function EditorPage() {
                                                 pointerEvents: "none",
                                             }}
                                         />
-                                        {activeData.map((node) => (
+                                        {isLoaded && activeData.map((node) => (
                                             <div
                                                 key={node.id}
                                                 className="node"
+                                                onMouseDown={() => setDraggedNode(node)}
                                                 style={{
                                                     position: "absolute",
-                                                    left: node.position.x * CELL_SIZE,
-                                                    top: node.position.z * CELL_SIZE,
+                                                    left: (node.x ?? node.x ?? 0) * CELL_SIZE,
+                                                    top: (node.z ?? node.z ?? 0) * CELL_SIZE,
                                                     width: 8,
                                                     height: 8,
-                                                    transform: highlightedIds.includes(node.id) ? "scale(1.5)" : "",
-                                                    borderRadius: "50%", background: highlightedIds.includes(node.id)
+                                                    transform: highlightedIds.includes(node.id) ? "scale(1.5)" : undefined,
+                                                    borderRadius: "50%",
+                                                    background: highlightedIds.includes(node.id)
                                                         ? "green"
                                                         : mode === "plan"
                                                             ? "red"

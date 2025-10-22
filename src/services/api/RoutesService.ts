@@ -1,6 +1,7 @@
 import type { Vector3 } from "three";
 import BuildingService from "@/services/api/BuildingService";
 import { RoutePoint } from "@/types/point/RoutePoint";
+import Floor from "@/types/building/Floor";
 
 
 export default class RoutesService {
@@ -20,7 +21,6 @@ export default class RoutesService {
 
           if (!res.ok) {
             if (res.status === 404) {
-              building.planPoints = [];
               continue;
             } else {
               throw new Error(`Ошибка загрузки: ${res.statusText}`);
@@ -28,24 +28,24 @@ export default class RoutesService {
           }
 
           const data: Record<string, any[]> = await res.json();
-          if (!building.routePoints) {
-            building.routePoints = [];
-          }
 
           for (const [floorStr, floorPoints] of Object.entries(data)) {
             const floorNum = Number(floorStr);
-            console.log(floorNum);
 
             const floorPointsWithFloor = floorPoints.map((cp) =>
               new RoutePoint(
                 cp.id,
-                cp.position?.x/10 - this.offsetX,
-                cp.position?.z/10 - this.offsetZ,
+                cp.x / 1 - this.offsetX,
+                cp.z / 1 - this.offsetZ,
                 cp.wayIds
               )
             );
 
-            building.routePoints.push(...floorPointsWithFloor);
+            const floorIndex = floorNum - 1;
+            if (building.floors[floorIndex] == null) {
+              building.floors[floorIndex] = new Floor(floorNum, [], [], [], []);
+            } 
+            building.floors[floorIndex].routePoints.push(...floorPointsWithFloor);
           }
         } catch (err) {
           console.error("Ошибка загрузки чекпоинтов:", err, `→ Загруза путей: ${building.name}`);
@@ -78,7 +78,7 @@ export default class RoutesService {
     let minDiff = Infinity;
 
 
-    for (const cp of BuildingService.activeBuilding.routePoints) {
+    for (const cp of BuildingService.activeFloor.routePoints) {
       const diff = this.getDifference(cp, startRoutePoint);
       if (diff < minDiff) {
         minDiff = diff;

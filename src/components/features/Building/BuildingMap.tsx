@@ -59,6 +59,9 @@ const BuildingMap = forwardRef(({ points: controlledPoints }: BuildingMapProps, 
         controlsRef.current.update();
       }
     },
+    focusToCheckpoint: (id: number) => {
+      setSelectedCheckpoint(id);
+    }
   }));
 
 
@@ -66,7 +69,7 @@ const BuildingMap = forwardRef(({ points: controlledPoints }: BuildingMapProps, 
   let path: RoutePoint[] | null;
 
   if (selectedCheckpoint && startPos) {
-    const target = BuildingService.activeBuilding.routePoints.find(c => c.id === selectedCheckpoint);
+    const target = BuildingService.activeFloor.routePoints.find(c => c.id === selectedCheckpoint);
     if (target) {
       path = RoutesService.findPath(startPos, target);
 
@@ -78,24 +81,18 @@ const BuildingMap = forwardRef(({ points: controlledPoints }: BuildingMapProps, 
   }
 
   useEffect(() => {
-    const building = BuildingService.activeBuilding;
-    if (!building || !building.routePoints) return; {
+    const floor = BuildingService.activeFloor;
+    if (!floor || !floor.routePoints) return; {
 
-      const cp = building.routePoints.find(
+      const cp = floor.routePoints.find(
         c => c.id === selectedCheckpoint
       );
       if (cp) setSelectedCheckpoint(cp.id);
     }
-  }, [selectedCheckpoint, BuildingService.activeBuilding]);
+  }, [selectedCheckpoint, BuildingService.activeFloor]);
 
   return (
     <>
-      <div className="marshrut">
-        <p>Пункт назначения: {startPos ? startPos.x + " | " + startPos.z : null}</p>
-        <br></br>
-        <p>Ваше местоположение: {selectedCheckpoint ?? 0}</p>
-
-      </div>
       <Canvas id="map" className="campus-map-canvas" camera={{ position: [0, 2000, 100], fov: 10 }}>
         <ambientLight intensity={0.8} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
@@ -124,21 +121,21 @@ const BuildingMap = forwardRef(({ points: controlledPoints }: BuildingMapProps, 
         ) : (
 
           <>
-            {isLoaded && BuildingService.activeBuilding && BuildingService.activeBuilding.planPoints
-              ? BuildingService.activeBuilding.planPoints.map((p) =>
+            {isLoaded && BuildingService.activeFloor && BuildingService.activeFloor.planPoints
+              ? BuildingService.activeFloor.planPoints.map((p) =>
                 p.parentId ? (
                   <WallBetweenPoints
-                    key={p.id}
-                    start={BuildingService.activeBuilding.planPoints.find((pt) => pt.id === p.parentId)!}
+                    key={`plan-${p.id}`}
+                    start={BuildingService.activeFloor.planPoints.find((pt) => pt.id === p.parentId)!}
                     end={p}
                   />
                 ) : null
               )
               : null}
-            {isLoaded && BuildingService.activeBuilding && BuildingService.activeBuilding.routePoints &&
-              BuildingService.activeBuilding.routePoints.map((cp) => (
+            {isLoaded && BuildingService.activeFloor && BuildingService.activeFloor.routePoints &&
+              BuildingService.activeFloor.routePoints.map((cp) => (
                 <mesh
-                  key={cp.id}
+                  key={`route-${cp.id}`}
                   position={[cp.x, 0.5, cp.z]}
                   onClick={() => handleCheckpointClick(cp.id)}
                 >

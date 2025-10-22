@@ -25,25 +25,27 @@ export default class EditorDataManager {
     }
 
     public static setActiveData(data: BasePoint[]): BasePoint[] {
-        if (!data.length) return [];
+        if (!data || !data.length) {
+            this.activeData = [];
+            return this.activeData;
+        }
 
-        if (data[0] instanceof RoutePoint) {
-            return data.map((p) => ({
+        const first = data[0] as any;
+        if (first instanceof RoutePoint || (first && (first as any).hasOwnProperty('someRouteSpecificProp'))) {
+            this.activeData = data.map((p: any) => ({
                 ...p,
-                position: {
-                    x: Utils.toFixedNumber((p.x + RoutesService.offsetX) * 10),
-                    z: Utils.toFixedNumber((p.z + RoutesService.offsetZ) * 10),
-                },
+                x: Utils.toFixedNumber((p.x + (RoutesService.offsetX ?? 0)) * 100),
+                z: Utils.toFixedNumber((p.z + (RoutesService.offsetZ ?? 0)) * 100),
             }));
         } else {
-            return data.map((p) => ({
+            this.activeData = data.map((p: any) => ({
                 ...p,
-                position: {
-                    x: Utils.toFixedNumber((p.x) * 10),
-                    z: Utils.toFixedNumber((p.z) * 10),
-                },
+                x: Utils.toFixedNumber((p.x ?? p.position?.x ?? 0) * 10),
+                z: Utils.toFixedNumber((p.z ?? p.position?.z ?? 0) * 10)
             }));
         }
+
+        return this.activeData;
     }
 
     public static updatePoint(id: number, x: number, z: number): void {
