@@ -1,9 +1,10 @@
-.kutg-input {
-    width: 422px;
-    height: 49px;
+.login-page .kutg-input {
+    max-width: 100%;
+    width: 320px;
+    height: 48px;
 
     border-radius: 12px;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     line-height: 24px;
     text-align: center;
@@ -13,22 +14,36 @@
     border-radius: 16px;
 }
 
-body #root {
+.login-page {
+    width: 100vw;
+    padding: 8px;
+    font-size: 16px;
     color: #919191;
     background: #C3F9FF;
     height: 100vh;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-direction: column;
     gap: 32px;
 }
-.text-container {
+
+
+.login-page .login-inputs {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 24px;
+    margin-bottom: 32px;
 }
 
-img {
-    height: 182px;
+.login-page  img {
+    max-width: 480px;
+    width: 90%;
+}
+
+@media screen and (min-width: 480px) {
+    .login-page .kutg-input {
+        width: 400px;
+    }
 }

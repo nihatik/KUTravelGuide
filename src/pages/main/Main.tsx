@@ -9,7 +9,7 @@ import BuildingCard from '@/components/features/Building/BuildingCard';
 import '@/assets/styles/LeftPanel.css';
 import { TabsBox, Tab } from '@/components/ui/TabsBox';
 import type Building from '@/types/building/Building';
-import { faBarsStaggered, faBookmark, faCalendar, faCalendarAlt, faCalendarDay, faCircleQuestion, faFaceAngry, faFileCircleQuestion, faFire, faHome, faMap, faPersonCircleQuestion, faQ, faQuestion, faQuestionCircle, faUniversity } from '@fortawesome/free-solid-svg-icons';
+import { faBarsStaggered, faBookmark, faCalendarAlt, faFire, faHome, faQuestionCircle, faUniversity } from '@fortawesome/free-solid-svg-icons';
 import "@/assets/styles/Main.css";
 import { HistoryCard } from '@/components/features/Card/HistoryCard';
 import { QuestionCard } from '@/components/features/Card/QuestionCard';
