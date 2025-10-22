@@ -229,7 +229,6 @@ export default function Get() {
         onZoomOut={() => mapRef.current?.zoomOut()}
         onGetLocation={handleGetLocation}
       />
-
     </>
   );
 }
