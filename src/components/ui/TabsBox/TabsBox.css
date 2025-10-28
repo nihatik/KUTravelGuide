@@ -46,6 +46,10 @@
     transition: 0.3s;
     height: auto;
 }
+.tab-pane{
+    display: flex;
+    flex-direction: column;
+}
 
 .tab-btn.active span.active {
     opacity: 0;

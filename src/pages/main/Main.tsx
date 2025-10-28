@@ -2,7 +2,7 @@ import { YMaps } from '@pbe/react-yandex-maps';
 import "@/assets/styles/YMap.css";
 import GeocodeMap from '@/components/features/Map/GeocodeMap';
 import RightPanel from '@/components/RightPanel';
-import { useRef, useState, useMemo, useEffect } from 'react';
+import { useRef, useState, useMemo, useEffect, use } from 'react';
 import CampusMap from '@/components/features/Building/BuildingMap';
 import BuildingService from '@/services/api/BuildingService';
 import BuildingCard from '@/components/features/Building/BuildingCard';
@@ -13,12 +13,11 @@ import { faBarsStaggered, faBookmark, faCalendarAlt, faFire, faHome, faQuestionC
 import "@/assets/styles/Main.css";
 import { HistoryCard } from '@/components/features/Card/HistoryCard';
 import { QuestionCard } from '@/components/features/Card/QuestionCard';
-import { LessonCard } from '@/components/features/Card/LessonCard';
 import RoutesService from '@/services/api/RoutesService';
+import Lessons from './leftcontent/Lessons';
 
 export default function Get() {
   const allBuildings = BuildingService.getAll();
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const mapRef = useRef<any>(null);
   const [activeBuildingId, setActiveBuildingId] = useState<number | null>(null);
@@ -27,13 +26,17 @@ export default function Get() {
 
   const handleGetLocation = async () => { };
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
 
   useEffect(() => {
     BuildingService.init().then(() =>
       RoutesService.init().then(() => setIsLoaded(true))
     );
-  }, [RoutesService]);
+  }, []);
 
+
+  
   const handleJoin = (id: number) => {
     const newBuilding = BuildingService.getById(id);
     if (newBuilding) {
@@ -116,68 +119,7 @@ export default function Get() {
             </div>
           </Tab>
           <Tab id='schedule' label='Учеба' icon={faCalendarAlt}>
-            <h3>Моё расписание</h3>
-            <ul>
-              <LessonCard
-                lesson={{
-                  name: "Проектирование надежных компьютерных систем-лекц",
-                  time: "9:30 - 10:20",
-                  room: "405/УЛК",
-                  teacher: "маг., ст.пр. Пяткова Т.В."
-                }}
-              />
-              <LessonCard
-                lesson={{
-
-
-
-                  name: "Системы искусственного интеллекта-лекц",
-                  time: "10:30 - 11:20",
-                  room: "636/УЛК",
-                  teacher: "док PhD, доц. Астапенко Н.В."
-                }}
-              />
-              <LessonCard
-                lesson={{
-                  name: "Информационная безопасность-лекц",
-                  time: "11:30 - 12:20",
-                  room: "636/УЛК",
-                  teacher: "маг., ст.пр. Семенюк В.В."
-                }}
-              />
-              <LessonCard
-                lesson={{
-                  name: "Проектирование программного обеспечения-лекц",
-                  time: "12:50 - 13:40",
-                  room: "413/УЛК",
-                  teacher: "маг., ст.пр. Пяткова Т.В."
-                }}
-              />
-              <LessonCard
-                lesson={{
-                  name: "Управление разработкой программного обеспечения-лекц",
-                  time: "13:50 - 14:40",
-                  room: "413/УЛК",
-                  teacher: "маг., ст.пр. Пяткова Т.В."
-                }}
-              />
-              <LessonCard
-                lesson={{
-                  name: "Управление разработкой программного обеспечения-лаб",
-                  time: "14:50 - 15:40",
-                  room: "324/6",
-                  teacher: "Мунтинов к.Д."
-                }}
-              />
-              <LessonCard
-                lesson={{
-                  name: "Управление разработкой программного обеспечения-лаб",
-                  time: "15:50 - 16:40",
-                  room: "324/6",
-                  teacher: "Мунтинов к.Д."
-                }}
-              />
-            </ul>
+            <Lessons/>
           </Tab>
           <Tab id='popular' label='Частое' icon={faFire}>
           </Tab>
@@ -202,8 +144,8 @@ export default function Get() {
                 answer="Если вы обнаружили проблему с картой, пожалуйста, свяжитесь с нашей службой поддержки через форму обратной связи на сайте или отправьте электронное письмо на указанный адрес поддержки."
               />
               <QuestionCard
-              question='Публикация статей'
-              answer='Чтобы опубликовать статью, перейдите в раздел "Мои статьи" и нажмите кнопку "Создать новую статью". Заполните необходимые поля и нажмите "Опубликовать".'
+                question='Публикация статей'
+                answer='Чтобы опубликовать статью, перейдите в раздел "Мои статьи" и нажмите кнопку "Создать новую статью". Заполните необходимые поля и нажмите "Опубликовать".'
               />
             </ul>
 

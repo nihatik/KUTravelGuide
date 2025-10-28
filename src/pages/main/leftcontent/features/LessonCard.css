@@ -1,0 +1,85 @@
+.lesson-card {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0;
+    padding: 24px 12px 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+
+.lesson-card span:has(svg){
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.lesson-card svg {
+    margin-right: 4px;
+}
+.lesson-card__top {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+.lesson-card__bottom{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.lesson-card__bottom > div{
+    display: flex;
+}
+.lesson-card__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lesson-card__name {
+    font-size: 1rem;
+    font-weight: 550;
+    margin: 0;
+}
+
+.lesson-card__teacher {
+    font-size: 0.9rem;
+    color: #4d4d4d;
+    margin: 0;
+}
+
+.lesson-card__room {
+    font-size: 0.85rem;
+    color: #5a5a5a;
+    margin: 0;
+    font-weight: 400;
+}
+.lesson-card__time {
+    font-size: 0.85rem;
+    display: flex;
+    font-weight: 400;
+    color: #555;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    .lesson-card {
+        padding: 12px 14px;
+    }
+
+    .lesson-card__main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .lesson-card__time {
+        align-self: flex-start;
+    }
+}

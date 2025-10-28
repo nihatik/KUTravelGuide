@@ -12,7 +12,7 @@ type RightPanelProps = {
 export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation }: RightPanelProps) {
   const [menuActive, setMenuActive] = useState(false);
 
-  const [user, setUser] = useState({ name: "Гость", login: null as string | null, admin: null as boolean | null });
+  const [user, setUser] = useState({ name: "Гость", group: null as string | null, admin: null as boolean | null });
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
@@ -25,7 +25,7 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation }: Right
   const quitAccount = (e: React.MouseEvent) => {
     e.preventDefault();
     localStorage.removeItem("user");
-    setUser({ name: "Гость", login: null, admin: null });
+    setUser({ name: "Гость", group: null, admin: null });
   };
 
   const joinAccount = (e: React.MouseEvent) => {
@@ -69,16 +69,16 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation }: Right
               <img src="assets/account.png" alt="User Icon" />
               <div className="user-info">
                 <span className="user-info-name">{user.name}</span>
-                {user.login && <span className="user-info-group">{user.login.toUpperCase()}</span>}
+                {user.group && <span className="user-info-group">{user.group.toUpperCase()}</span>}
               </div>
             </div>
-            {user.login &&
+            {user.group &&
               <div id="exit-link" onClick={quitAccount}>
                 <FontAwesomeIcon className="fa-big icon" icon={faDoorOpen} />
                 <a href="#">Выйти из аккаунта</a>
               </div>
             }
-            {!user.login &&
+            {!user.group &&
               <div id="join-link" onClick={joinAccount}>
                 <FontAwesomeIcon className="fa-big icon" icon={faDoorOpen} />
                 <a href="#">Войти в аккаунт</a>
@@ -88,7 +88,7 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation }: Right
 
           <div className="right-menu-links">
 
-            {user.login && user.admin &&
+            {user.group && user.admin &&
               <div className="right-menu-link">
                 <FontAwesomeIcon className="fa-big icon" icon={faUserTie} />
                 <a href="/admin">Админ панель</a>
