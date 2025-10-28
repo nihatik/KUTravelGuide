@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import FileInput from "@/components/ui/FileInput/FileInput";
-import "@/assets/styles/EditorMenu.css";
+import "./EditorMenu.css";
 import Dropdown from "@/components/ui/Dropdown/Dropdown";
-import EditorBtn from "@/components/features/Admin/EditorBtn";
+import EditorBtn from "./EditorBtn";
 import BuildingService from "@/services/api/BuildingService";
 import { RoutePoint } from "@/types/point/RoutePoint";
 import { PlanPoint } from "@/types/point/PlanPoint";
@@ -18,7 +18,7 @@ const CELL_SIZE = 3;
 const images = import.meta.glob("@/assets/images/buildings/*.{png,jpg,jpeg,webp}", { eager: true });
 const imagePaths = Object.values(images).map((img: any) => img.default);
 
-export default function EditorPage() {
+export default function EditorMenu() {
     const [showData, setShowData] = useState<boolean>(false);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
 

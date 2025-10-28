@@ -1,0 +1,11 @@
+.feedback-admin .header{ margin-bottom: 16px; }
+.feedback-admin .error{ color: #b00020; margin-bottom: 12px; }
+.feedback-admin .loading{ color: #666; margin-bottom: 12px; }
+.feedback-admin .list{ display: grid; gap: 12px; }
+.feedback-admin .card{ border: 1px solid #eee; background: #fff; border-radius: 12px; padding: 12px; }
+.feedback-admin .meta{ font-size: 13px; color: #555; display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+.feedback-admin .message{ font-size: 14px; margin-bottom: 10px; }
+.feedback-admin .reply-row{ display: flex; gap: 8px; }
+.feedback-admin .reply-row input{ flex: 1; border: 1px solid #ddd; border-radius: 8px; padding: 8px 10px; }
+button.primary{ background: #1f6feb; color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "@/assets/styles/AdminSidePanel.css";
+import "./AdminSidePanel.css";
 
 export default function AdminSidePanel() {
   return (
@@ -8,8 +8,8 @@ export default function AdminSidePanel() {
         <ul>
           <li><Link to="/admin"><div>Главная</div></Link></li>
           <li><Link to="/admin/buildings"><div>Здания</div></Link></li>
-          <li><Link to="/admin/rooms"><div>Помещения</div></Link></li>
-          <li><Link to="/admin/planeditor"><div>Планировщик</div></Link></li>
+          <li><Link to="/admin/users"><div>Пользователи</div></Link></li>
+          <li><Link to="/admin/feedback"><div>Обратная связь</div></Link></li>
           <li><Link to="/admin/editor"><div>Редактор</div></Link></li>
         </ul>
         <ul>

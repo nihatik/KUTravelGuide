@@ -1,4 +1,4 @@
-import { LessonCard } from '@/pages/main/leftcontent/features/LessonCard';
+import { LessonCard } from '@/pages/main/leftcontent/lessons/features/LessonCard';
 import { useEffect, useState } from 'react';
 import "./Lessons.css"
 

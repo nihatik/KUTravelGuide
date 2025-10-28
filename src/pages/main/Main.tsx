@@ -2,7 +2,7 @@ import { YMaps } from '@pbe/react-yandex-maps';
 import "@/assets/styles/YMap.css";
 import GeocodeMap from '@/components/features/Map/GeocodeMap';
 import RightPanel from '@/components/RightPanel';
-import { useRef, useState, useMemo, useEffect, use } from 'react';
+import { useRef, useState, useMemo, useEffect } from 'react';
 import CampusMap from '@/components/features/Building/BuildingMap';
 import BuildingService from '@/services/api/BuildingService';
 import BuildingCard from '@/components/features/Building/BuildingCard';
@@ -12,9 +12,11 @@ import type Building from '@/types/building/Building';
 import { faBarsStaggered, faBookmark, faCalendarAlt, faFire, faHome, faQuestionCircle, faUniversity } from '@fortawesome/free-solid-svg-icons';
 import "@/assets/styles/Main.css";
 import { HistoryCard } from '@/components/features/Card/HistoryCard';
-import { QuestionCard } from '@/components/features/Card/QuestionCard';
+import { QuestionCard } from '@/pages/main/leftcontent/help/features/QuestionCard';
 import RoutesService from '@/services/api/RoutesService';
-import Lessons from './leftcontent/Lessons';
+import Lessons from './leftcontent/lessons/Lessons';
+import KUTGSearch from './features/KUTGSearch';
+import Help from './leftcontent/help/Help';
 
 export default function Get() {
   const allBuildings = BuildingService.getAll();
@@ -80,12 +82,7 @@ export default function Get() {
         <TabsBox defaultTab='main'>
           <Tab id='main' label='Главная' icon={faHome}>
             <div>
-              <input
-                id="buildingSearch"
-                type="search"
-                placeholder="Поиск..."
-              />
-
+              <KUTGSearch/>
               <ul>
                 <HistoryCard
                   name="1 корпус"
@@ -96,12 +93,7 @@ export default function Get() {
           </Tab>
           <Tab id='university' label='Здания' icon={faUniversity}>
             <div>
-              <input
-                id="buildingSearch"
-                type="search"
-                onChange={handleInput}
-                placeholder="Поиск..."
-              />
+              <KUTGSearch onChange={handleInput} />
               <ul id="buildingResults">
                 {allBuildings.map(building => {
                   const isShown = filteredIds.includes(building.id);
@@ -126,29 +118,7 @@ export default function Get() {
           <Tab id='bookmarks' label='Закладки' icon={faBookmark}>
           </Tab>
           <Tab id='help' label='Помощь' icon={faQuestionCircle}>
-            <ul>
-              <QuestionCard
-                question="Как проложить маршрут до аудитории?"
-                answer="Чтобы проложить маршрут до аудитории, выберите здание на карте или в списке зданий, затем укажите вашу текущую позицию и пункт назначения. Система автоматически рассчитает оптимальный маршрут."
-              />
-              <QuestionCard
-                question="Как найти ближайший туалет?"
-                answer="Чтобы найти ближайший туалет, воспользуйтесь картой и выберите соответствующий пункт. Вы также можете спросить у сотрудников университета."
-              />
-              <QuestionCard
-                question="Как изменить настройки карты?"
-                answer="Чтобы изменить настройки карты, перейдите в раздел настроек в правом верхнем углу карты. Там вы сможете выбрать тип карты, включить или отключить слои и настроить другие параметры отображения."
-              />
-              <QuestionCard
-                question="Как сообщить о проблеме с картой?"
-                answer="Если вы обнаружили проблему с картой, пожалуйста, свяжитесь с нашей службой поддержки через форму обратной связи на сайте или отправьте электронное письмо на указанный адрес поддержки."
-              />
-              <QuestionCard
-                question='Публикация статей'
-                answer='Чтобы опубликовать статью, перейдите в раздел "Мои статьи" и нажмите кнопку "Создать новую статью". Заполните необходимые поля и нажмите "Опубликовать".'
-              />
-            </ul>
-
+            <Help/>
           </Tab>
           <Tab id='hide' label='Скрыть' icon={faBarsStaggered}>
           </Tab>

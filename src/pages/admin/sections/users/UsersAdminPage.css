@@ -1,0 +1,8 @@
+.users-admin .header{ margin-bottom: 16px; }
+.users-admin .error{ color: #b00020; margin-bottom: 12px; }
+.users-admin .loading{ color: #666; margin-bottom: 12px; }
+.users-admin .table-wrap{ width: 100%; overflow: auto; background: #fff; border: 1px solid #eee; border-radius: 12px; }
+.users-admin table{ width: 100%; border-collapse: collapse; font-size: 14px; }
+.users-admin th, .users-admin td{ padding: 10px 12px; border-bottom: 1px solid #f0f0f0; text-align: left; }
+.users-admin thead th{ background: #fafafa; font-weight: 600; }
+

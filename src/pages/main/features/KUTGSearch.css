@@ -1,0 +1,12 @@
+.buildingSearch{
+    border: none;
+    outline: none;
+    position: relative;
+    box-shadow: none;
+    transition: 0.3s;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 8px 8px 8px 16px;
+    height: 80px;
+    width: 100%;
+}

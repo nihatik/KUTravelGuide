@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card } from "./Card";
+import { Card } from "../../../../../components/features/Card/Card";
 import "./QuestionCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";

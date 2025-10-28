@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import "@assets/styles/AdminPage.css";
-import EditorPage from "./editor/EditorPage";
-import AdminSidePanel from "@/components/features/Admin/AdminSidePanel";
-import BuildingsAdminPage from "@/pages/admin/buildings/BuildingsAdminPage";
+import "./AdminPage.css";
+import EditorMenu from "./sections/editor/EditorMenu";
+import AdminSidePanel from "@/pages/admin/features/AdminSidePanel";
+import BuildingsAdminPage from "./sections/buildings/BuildingsAdminPage";
+import UsersAdminPage from "./sections/users/UsersAdminPage";
+import FeedbackAdminPage from "./sections/feedback/FeedbackAdminPage";
 
 export default function AdminPage() {
   return (
@@ -12,8 +14,10 @@ export default function AdminPage() {
       <div className="admin-content">
         <Routes>
           <Route path="/" element={<h1>Главная админки</h1>} />
-          <Route path="/editor" element={<EditorPage />} />
+          <Route path="/editor" element={<EditorMenu />} />
           <Route path="/buildings" element={<BuildingsAdminPage />} />
+          <Route path="/users" element={<UsersAdminPage />} />
+          <Route path="/feedback" element={<FeedbackAdminPage />} />
         </Routes>
       </div>
     </>

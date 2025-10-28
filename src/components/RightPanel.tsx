@@ -110,7 +110,6 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation }: Right
               <FontAwesomeIcon className="fa-big icon" icon={faComments} />
               <div className="column">
                 <a href="#">Обратная связь</a>
-                <a href="#">О нас</a>
               </div>
             </div>
             <div className="right-menu-link">
