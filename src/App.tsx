@@ -3,7 +3,7 @@ import BaseLayout from "./components/layouts/BaseLayout";
 import AdminLayout from "./pages/admin/AdminLayout";
 import Main from "./pages/main/Main";
 import AdminPage from "./pages/admin/AdminPage";
-import BuildingMap from "./components/features/Building/BuildingMap";
+import BuildingMap from "./pages/main/leftcontent/buildings/features/BuildingMap";
 import LoginPage from "./pages/login/LoginPage";
 
 function App() {

@@ -1,6 +1,8 @@
 import { LessonCard } from '@/pages/main/leftcontent/lessons/features/LessonCard';
 import { useEffect, useState } from 'react';
 import "./Lessons.css"
+import KUTGLoading from '../../features/KUTGLoading';
+import KUTGTabHeader from '../../features/KUTGTabHeader';
 
 
 export default function Lessons() {
@@ -78,7 +80,6 @@ export default function Lessons() {
         getLessons().then((res) => {
             setLessons(res);
 
-            // Определяем сегодняшний день недели
             const today = new Date();
             const daysMap: Record<number, string> = {
                 0: "воскресенье",
@@ -105,29 +106,6 @@ export default function Lessons() {
         });
     }, [userLoaded, user.login, user.pass]);
 
-    if (!lessons) {
-        return (
-            <div className="flex flex-col items-center text-gray-400 mt-8">
-                <svg
-                    fill="#03BFD366"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-8 h-8 animate-spin mb-2"
-                >
-                    <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
-                        <animateTransform
-                            attributeName="transform"
-                            type="rotate"
-                            dur="0.75s"
-                            values="0 12 12;360 12 12"
-                            repeatCount="indefinite"
-                        />
-                    </path>
-                </svg>
-                <p>Загрузка расписания...</p>
-            </div>
-        );
-    }
 
     const schedule = lessons ?? {};
 
@@ -135,31 +113,32 @@ export default function Lessons() {
 
     return (
         <>
-            {selectedDay && (
-                <>
-                    <div className='centerX column lessons-top'>
-                        <span>Расписание на сегодня</span>
-                    </div>
+            <> 
+                <KUTGTabHeader title='Расписание на сегодня' />
+                {
+                    !lessons && (
+                        <KUTGLoading />
+                    )
+                }
+                {lessons && selectedLessons.map((lesson: any, i: number) => {
+                    const [rawStart, rawEnd] = (lesson.time || "").split(" - ");
+                    const startTime = rawStart?.replace(".", ":") ?? "";
+                    const endTime = rawEnd?.replace(".", ":") ?? "";
 
-                    {selectedLessons.map((lesson: any, i: number) => {
-                        const [rawStart, rawEnd] = (lesson.time || "").split(" - ");
-                        const startTime = rawStart?.replace(".", ":") ?? "";
-                        const endTime = rawEnd?.replace(".", ":") ?? "";
-
-                        return (
-                            <LessonCard
-                                key={i}
-                                lesson={{
-                                    name: `${lesson.subject} (${lesson.type})`,
-                                    startTime: startTime,
-                                    endTime: endTime,
-                                    room: lesson.cabinet,
-                                    teacher: lesson.teacher,
-                                }}
-                            />
-                        );
-                    })}
-                </>
-            )}</>
+                    return (
+                        <LessonCard
+                            key={i}
+                            lesson={{
+                                name: `${lesson.subject} (${lesson.type})`,
+                                startTime: startTime,
+                                endTime: endTime,
+                                room: lesson.cabinet,
+                                teacher: lesson.teacher,
+                            }}
+                        />
+                    );
+                })}
+            </>
+        </>
     );
 }

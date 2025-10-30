@@ -1,0 +1,70 @@
+.bookmark-card {
+    width: 100%;
+    padding: 16px 0;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 16px;
+    height: 160px
+}
+
+.bookmark-card-left {
+    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookmark-card-img {
+    width: 100%;
+    object-fit: cover;
+    min-width: 180px;
+    height: 120px;
+    border-radius: 16px;
+}
+
+
+.bookmark-card__title {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.9);
+}
+
+.bookmark-card__address {
+    font-weight: 400;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.7);
+}
+.bookmark-card-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bookmark-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: left   ;
+    flex-direction: column;
+}
+
+.bookmark-card-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 19px;
+    border-radius: 8px;
+    transition: 0.3s;
+    width: fit-content;
+    margin-bottom: 8px;
+    justify-content: space-between;
+}
+
+
+.bookmark-card-remove svg{
+    color: rgba(var(--kutg-color-for-rgba), 0.8);
+}

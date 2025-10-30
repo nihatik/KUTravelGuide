@@ -1,0 +1,20 @@
+.kutg-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    height: 100%;
+    color: #686868;
+    margin-top: 160px;
+}
+
+.kutg-loading svg {
+    width: 48px;
+    height: 48px;
+}
+
+.kutg-loading p{
+    font-size: 1rem;
+}

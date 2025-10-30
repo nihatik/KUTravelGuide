@@ -1,10 +1,11 @@
 export interface ServerBuildingDTO {
-  id?: number;
+  id: number;
   name: string;
-  description?: string;
+  description: string;
   buildingType: string;
-  street?: string;
-  position?: { lat: number; lng: number } | [number, number];
+  street: string;
+  position?: { latitude: number; longitude: number } | [number, number];
+  floors: any[];
 }
 
 const BASE_URL = "/api/buildings";

@@ -1,6 +1,6 @@
 import "./RightPanel.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCircleHalfStroke, faComments, faDoorOpen, faLanguage, faLocationDot, faMinus, faMobile, faPlus, faUniversity, faUserTie } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faArrowLeft, faCircleHalfStroke, faComments, faDoorOpen, faLanguage, faLocationDot, faMinus, faMobile, faPlus, faUniversity, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 
 type RightPanelProps = {
@@ -43,7 +43,7 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation }: Right
       <div className="right-buttons">
         <div className="top">
           <button onClick={showRightMenu} className={`right-menu-show-btn ${menuActive ? "active" : ""}`}>
-            <FontAwesomeIcon className="fa-big icon" icon={faArrowLeft} />
+            <FontAwesomeIcon className="fa-big icon" icon={faAngleLeft} />
           </button>
         </div>
         <div className="center">

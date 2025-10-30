@@ -1,35 +1,101 @@
-import { QuestionCard } from '@/pages/main/leftcontent/help/features/QuestionCard';
 import KUTGSearch from '../../features/KUTGSearch';
+import { QuestionCategory } from './features/QuestionCategory';
+import { useEffect, useMemo, useState } from 'react';
+import { QuestionsHttp, type QuestionDTO } from '@/services/api/QuestionsHttp';
+import KUTGLoading from '../../features/KUTGLoading';
+import { QuestionCard } from './features/QuestionCard';
 
 
 export default function Help() {
+    const [items, setItems] = useState<QuestionDTO[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [searchValue, setSearchValue] = useState<string>("");
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+    const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value.toLowerCase());
+    };
+
+    useEffect(() => {
+        void load();
+    }, []);
+
+    const filteredIds = useMemo(() => {
+        if (!searchValue.trim()) return items.map(b => b.id);
+
+        return items
+            .filter(b =>
+                b.question.toLowerCase().includes(searchValue) ||
+                b.answer?.toLowerCase().includes(searchValue)
+            )
+            .map(b => b.id);
+    }, [searchValue, items]);
+
+    const handleCategoryClick = (category: string) => {
+        setSelectedCategory(prev => (prev === category ? "" : category));
+    };
+    const removeSelectedCategory = () => {
+        setSelectedCategory("");
+    };
+
+    async function load() {
+        try {
+            setLoading(true);
+            setError(null);
+            const data = await QuestionsHttp.list();
+            setItems(data);
+        } catch (e: any) {
+            setError(e?.message || "Не удалось загрузить вопросы");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const categories = useMemo(() => {
+        const set = new Set(items.map(q => q.category));
+        return Array.from(set);
+    }, [items]);
+
     return (
-        <>  
-            <KUTGSearch/>
+        <>
+            <KUTGSearch onChange={handleInput} />
             <div>
-                <QuestionCard
-                    question="Как проложить маршрут до аудитории?"
-                    answer="Чтобы проложить маршрут до аудитории, выберите здание на карте или в списке зданий, затем укажите вашу текущую позицию и пункт назначения. Система автоматически рассчитает оптимальный маршрут."
-                />
-                <QuestionCard
-                    question="Как найти ближайший туалет?"
-                    answer="Чтобы найти ближайший туалет, воспользуйтесь картой и выберите соответствующий пункт. Вы также можете спросить у сотрудников университета."
-                />
-                <QuestionCard
-                    question="Как изменить настройки карты?"
-                    answer="Чтобы изменить настройки карты, перейдите в раздел настроек в правом верхнем углу карты. Там вы сможете выбрать тип карты, включить или отключить слои и настроить другие параметры отображения."
-                />
-                <QuestionCard
-                    question="Как сообщить о проблеме с картой?"
-                    answer="Если вы обнаружили проблему с картой, пожалуйста, свяжитесь с нашей службой поддержки через форму обратной связи на сайте или отправьте электронное письмо на указанный адрес поддержки."
-                />
-                <QuestionCard
-                    question='Публикация статей'
-                    answer='Чтобы опубликовать статью, перейдите в раздел "Мои статьи" и нажмите кнопку "Создать новую статью". Заполните необходимые поля и нажмите "Опубликовать".'
-                />
+                <div className='category-filter'>
+                    {searchValue === "" && selectedCategory === "" && (
+                        <p className='hint'>Выберите категорию или введите интересующий вас вопрос</p>
+                    )}
+
+                    {selectedCategory && (
+                        <div
+                            className="selected-questions-category"
+                            onClick={removeSelectedCategory}
+                        >
+                            {selectedCategory}
+                        </div>
+                    )}
+
+                    {searchValue && !selectedCategory && (
+                        <p className='hint'>Результаты поиска по запросу: "{searchValue}"</p>
+                    )}
+                </div>
+                {error && <div className="error">{error}</div>}
+                {loading && <KUTGLoading />}
+                {!loading && !error && searchValue == "" && selectedCategory == "" && categories.map(category => (
+                    <QuestionCategory key={category} category={category}
+                        onClick={() => handleCategoryClick(category)} />
+                ))}
+
+                {(searchValue !== "" || selectedCategory !== "") && items.map((item: QuestionDTO) => (
+                    filteredIds.includes(item.id) &&
+                    (selectedCategory === "" || item.category === selectedCategory) &&
+                    <QuestionCard
+                        key={"question-" + item.id}
+                        question={item.question}
+                        answer={item.answer}
+                    />
+                ))}
             </div>
-
-
         </>
     );
 }

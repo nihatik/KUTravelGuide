@@ -1,37 +1,27 @@
-import Building from "@/types/building/Building";
-import { BuildingType } from "@/types/building/BuildingType";
 import Floor from "@/types/building/Floor";
 import { PlanPoint } from "@/types/point/PlanPoint";
+import { BuildingsHttp, type ServerBuildingDTO } from "./BuildingsHttp";
 
 
 export default class BuildingService {
 
-  public static activeBuilding: Building;
+  public static activeBuilding: ServerBuildingDTO;
   public static activeFloor: Floor;
 
-  public static buildings: Building[] = [
-    new Building(0, "1 корпус", BuildingType.Campus, [54.8783257, 69.134562], "Абая Кунанбаева, 18", "", "1", [], 2),
-    new Building(1, "2 корпус", BuildingType.Campus, [54.8776746, 69.132845], "", "", "2", [], 2),
-    new Building(2, "4 корпус", BuildingType.Campus, [54.8761899, 69.131980], "", "", "4", [], 4),
-    new Building(3, "5 корпус", BuildingType.Campus, [54.8753436, 69.133293], "", "", "5", [], 4),
-    new Building(4, "6 корпус", BuildingType.Campus, [54.8751475, 69.134857], "", "", "6", [], 4),
-    new Building(5, "10 корпус", BuildingType.Campus, [54.8769555, 69.133369], "", "", "", [], 0),
-    new Building(6, "УЛК", BuildingType.Campus, [0, 0], "Александра Пушкина, 86Б", "", "ulk", [], 10),
-    new Building(7, "Общежитие 1", BuildingType.Dormitory, [54.8779410, 69.130018], "", "", "", [], 1),
-    new Building(8, "Winston | Столовая", BuildingType.Eatery, [54.8763896, 69.132708], "", "", "", [], 1)
-  ];
+  public static buildings: ServerBuildingDTO[] = [];
 
   public static async init() {
+    this.buildings = await BuildingsHttp.list();
     await this.loadData();
   }
 
   public static async loadData(): Promise<void> {
     for (const building of this.buildings) {
-      if (!building.keyPath) continue;
+      if (!building.name) continue;
 
       console.log(`→ Загрузка плана: ${building.name}`);
 
-      const planPath = `/data/buildings/${building.keyPath}/plan.json`;
+      const planPath = `/data/buildings/${building.name}/plan.json`;
 
       try {
         const res = await fetch(planPath);
@@ -82,7 +72,7 @@ export default class BuildingService {
   }
 
 
-  public static setActive(building: Building) {
+  public static setActive(building: ServerBuildingDTO) {
     this.activeBuilding = building;
     this.activeFloor = building.floors[0];
 
@@ -90,28 +80,36 @@ export default class BuildingService {
     console.log(this.activeBuilding, this.activeFloor);
   }
 
-  public static getById(id: number): Building | null {
+  public static getById(id: number): ServerBuildingDTO | null {
     return this.buildings.find(c => c.id === id) || null;
   }
 
-  public static getByName(name: string): Building | null {
+  public static getByName(name: string): ServerBuildingDTO | null {
     return this.buildings.find(c => c.name === name) || null;
   }
 
-  public static searchByValue(value: string): Building[] {
+  public static searchByValue(value: string): ServerBuildingDTO[] {
     return this.buildings.filter(c => c.name.toLowerCase().startsWith(value.toLowerCase()) || c.name.toLowerCase().includes(value.toLowerCase()));
   }
 
-  public static getAll(): Building[] {
+  public static getAll(): ServerBuildingDTO[] {
     return this.buildings;
   }
 
 
-  public static getByCoordinates(lat: number, lng: number, tolerance: number = 0.0001): Building[] {
-    return this.buildings.filter(c =>
-      Math.abs(c.position[0] - lat) < tolerance &&
-      Math.abs(c.position[1] - lng) < tolerance
-    );
+  public static getByCoordinates(
+    lat: number,
+    lng: number,
+    tolerance: number = 0.0001
+  ): ServerBuildingDTO[] {
+    return this.buildings.filter(c => {
+      if (!c.position || c.position == null) return false;
+
+      const buildingLat = Array.isArray(c.position) ? c.position[0] : c.position.latitude;
+      const buildingLng = Array.isArray(c.position) ? c.position[1] : c.position.longitude;
+      return Math.abs(buildingLat - lat) <= tolerance &&
+        Math.abs(buildingLng - lng) <= tolerance;
+    });
   }
 
   public static removeCampusById(id: number): boolean {

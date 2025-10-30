@@ -1,15 +1,16 @@
 import React from "react";
-import { Card } from "./Card";
+import { Card } from "../../../../../components/features/Card/Card";
 import "./HistoryCard.css"
 
 interface HistoryCardProps {
     name: string;
     address: string;
+    onClick?: () => void;
 }
 
-export const HistoryCard: React.FC<HistoryCardProps> = ({ name, address }) => {
+export const HistoryCard: React.FC<HistoryCardProps> = ({ name, address, onClick }) => {
     return (
-        <Card className="history-card row">
+        <Card className="history-card row" onClick={onClick}>
             <div className="history-card-left">
                 <svg viewBox="0 0 24 24" className="history-card-icon" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

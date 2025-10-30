@@ -24,7 +24,18 @@ const GeocodeMap = () => {
     useEffect(() => {
         if (mapReady && BuildingService.activeBuilding && mapRef.current) {
             const map = mapRef.current;
-            const [lat, lon] = BuildingService.activeBuilding.position;
+            const position = BuildingService.activeBuilding.position;
+            let lat: number;
+            let lon: number;
+
+            if (Array.isArray(position)) {
+                [lat, lon] = position;
+            } else if (position && typeof position === "object" && "lat" in position && "lng" in position) {
+                lat = (position as any).lat;
+                lon = (position as any).lng;
+            } else {
+                return;
+            }
 
             const panPromise = map.panTo([lat, lon], {
                 flying: true,
@@ -39,7 +50,7 @@ const GeocodeMap = () => {
 
             } else {
                 setTimeout(() => {
-                    map.setZoom(18, { duration: 300 }); 
+                    map.setZoom(18, { duration: 300 });
                 }, 1000);
 
             }
@@ -56,36 +67,43 @@ const GeocodeMap = () => {
             onClick={handleClick}
             instanceRef={handleMapLoad}
         >
-            {BuildingDataManager.buildings.map(building => (
-                <Placemark
-                    key={building.id}
-                    geometry={building.position}
-                    properties={{
-                        hintContent: building.name,
-                        balloonContent: `Это здание ${building.name}`,
-                    }}
-                    options={{
-                        iconLayout: "default#image",
-                        iconImageHref: "/assets/" + building.type + ".png",
-                        iconImageSize: [48, 48],
-                        iconImageOffset: [-24, -48],
-                    }}
-                    onClick={() => {
-                        const element = document.getElementById("positionValue");
-                        const joinBtn = document.getElementById("joinButton");
+            {BuildingDataManager.buildings.map(building => {
+                if (!building.position) return null;
 
-                        if (element) {
-                            element.textContent = building.name;
-                            if (joinBtn) {
-                                joinBtn.style.display = '';
-                                joinBtn.dataset.buildingId = building.id.toString();
+                const coords: [number, number] = [building.position.latitude, building.position.longitude];
+                console.log(building.name +  coords)
+                return (
+                    <Placemark
+                        key={building.id}
+                        geometry={coords}
+                        properties={{
+                            hintContent: building.name,
+                            balloonContent: `Это здание ${building.name}`,
+                        }}
+                        options={{
+                            iconLayout: "default#image",
+                            iconImageHref: "/assets/" + building.buildingType.toLowerCase() + ".png",
+                            iconImageSize: [48, 48],
+                            iconImageOffset: [-24, -48],
+                        }}
+                        onClick={() => {
+                            const element = document.getElementById("positionValue");
+                            const joinBtn = document.getElementById("joinButton");
+
+                            if (element) {
+                                element.textContent = building.name;
+                                if (joinBtn) {
+                                    joinBtn.style.display = '';
+                                    joinBtn.dataset.buildingId = building.id.toString();
+                                }
+                            } else if (joinBtn) {
+                                joinBtn.style.display = 'none';
                             }
-                        } else if (joinBtn) {
-                            joinBtn.style.display = 'none';
-                        }
-                    }}
-                />
-            ))}
+                        }}
+                    />
+                );
+            })}
+
         </MapStyled>
 
     );
