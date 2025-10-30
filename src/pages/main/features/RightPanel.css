@@ -10,9 +10,10 @@
     align-items: center;
 }
 
-.right-menu-show-btn .icon{
+.right-menu-show-btn .icon {
     transition: transform 0.5s;
 }
+
 .right-menu-show-btn.active .icon {
     transform: rotate(-180deg);
     transition: transform 0.5s;
@@ -42,7 +43,7 @@
     transition: transform 0.5s ease-in-out;
 }
 
-#right-panel.active{
+#right-panel.active {
     transform: translateX(0);
 }
 
@@ -122,7 +123,10 @@
     border-radius: 6px;
     transition: 0.2s;
 }
-.logo-close-btn:hover { background: rgba(0,0,0,0.05); }
+
+.logo-close-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
 
 .profile {
     display: flex;
@@ -279,16 +283,19 @@
     #right-panel {
         transform: translateX(100vw);
     }
-    #right-panel.active{
+
+    #right-panel.active {
         transform: translateX(0);
     }
+
     .right-menu {
         width: 100vw;
-        border-radius: 0; /* во всю ширину без скругления слева */
+        border-radius: 0;
+        /* во всю ширину без скругления слева */
         padding: 0 16px;
     }
 
-     /* Разделитель между профилем и ссылками (адаптация под фирменный стиль) */
+    /* Разделитель между профилем и ссылками (адаптация под фирменный стиль) */
     hr.separator:after {
         background: none repeat scroll var(--kutg-color);
         content: "";
@@ -298,15 +305,18 @@
         transform: rotate(-45deg);
         width: 5px;
 
-        }
+    }
+
     hr.separator {
         border-top: 0.5px solid var(--kutg-color);
         width: 100%;
         clear: both;
-        }  
+    }
 
-     /* Крупнее шрифт ссылок на мобильном */
-     .right-menu-link a { font-size: 18px; }
+    /* Крупнее шрифт ссылок на мобильном */
+    .right-menu-link a {
+        font-size: 18px;
+    }
 }
 
 /* На мобильных: прячем кнопки зума/локации, когда открыт таб-контент (body без класса mobile-overlay-hidden) */
@@ -314,4 +324,16 @@
     body:not(.mobile-overlay-hidden) #right-panel .center {
         display: none;
     }
+}
+
+.feedback-form-pop {
+    position: absolute;
+    top: 25%;
+    right: 0%;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    background: rgba(255,255,255,0.95);
+    border-radius: 14px;
+    margin-top: 8px;
+    padding: 14px;
+    width: 320px;
 }

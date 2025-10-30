@@ -32,6 +32,16 @@ export const FeedbackHttp = {
     });
     return handleResponse<FeedbackDTO>(res);
   },
+
+  async create(payload: { senderLogin: string; message: string }): Promise<FeedbackDTO> {
+    const res = await fetch(BASE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    });
+    return handleResponse<FeedbackDTO>(res);
+  },
 };
 
 

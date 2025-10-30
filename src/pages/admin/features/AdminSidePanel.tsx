@@ -10,6 +10,7 @@ export default function AdminSidePanel() {
           <li><Link to="/admin/buildings"><div>Здания</div></Link></li>
           <li><Link to="/admin/users"><div>Пользователи</div></Link></li>
           <li><Link to="/admin/feedback"><div>Обратная связь</div></Link></li>
+          <li><Link to="/admin/faquestions"><div>FAQ</div></Link></li>
           <li><Link to="/admin/editor"><div>Редактор</div></Link></li>
         </ul>
         <ul>

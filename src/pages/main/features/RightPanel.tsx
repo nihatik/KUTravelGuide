@@ -2,6 +2,7 @@ import "./RightPanel.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faArrowLeft, faCircleHalfStroke, faComments, faDoorOpen, faLanguage, faLocationDot, faMap, faMinus, faMobile, faPlus, faUniversity, faUserTie, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
+import { FeedbackHttp } from "@/services/api/FeedbackHttp";
 
 type RightPanelProps = {
   onZoomIn: () => void;
@@ -20,6 +21,10 @@ const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
 export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackToMap }: RightPanelProps) { 
   const [menuActive, setMenuActive] = useState(false);
   const [user, setUser] = useState({ name: "Гость", group: null as string | null, admin: null as boolean | null });
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [fbMessage, setFbMessage] = useState("");
+  const [fbSuccess, setFbSuccess] = useState<string|null>(null);
+  const [fbLoading, setFbLoading] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
@@ -44,6 +49,22 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackT
     e.preventDefault();
     setMenuActive(prev => !prev);
   };
+
+  async function submitFeedback(e: React.FormEvent) {
+    e.preventDefault();
+    if (!fbMessage.trim()) return;
+    setFbLoading(true);
+    setFbSuccess(null);
+    try {
+      await FeedbackHttp.create({ senderLogin: user.name, message: fbMessage.trim() });
+      setFbSuccess("Спасибо за обратную связь!");
+      setFbMessage("");
+      setTimeout(() => setFeedbackOpen(false), 2000);
+    } catch {
+      setFbSuccess("Ошибка при отправке, попробуйте ещё раз.");
+    }
+    setFbLoading(false);
+  }
 
   return (
     <div id={`right-panel`} className={`${menuActive ? "active" : ""}`}>
@@ -128,7 +149,8 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackT
             <div className="right-menu-link">
               <FontAwesomeIcon className="fa-big icon" icon={faComments} />
               <div className="column">
-                <a href="#">Обратная связь</a>
+                <a href="#" onClick={e => { e.preventDefault(); setFeedbackOpen(f=>!f); }}>Обратная связь</a>
+                
               </div>
             </div>
             <div className="right-menu-link">
@@ -152,5 +174,6 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackT
 
       </div>
     </div>
+    
   );
 }

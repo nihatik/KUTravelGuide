@@ -5,6 +5,7 @@ import AdminSidePanel from "@/pages/admin/features/AdminSidePanel";
 import BuildingsAdminPage from "./sections/buildings/BuildingsAdminPage";
 import UsersAdminPage from "./sections/users/UsersAdminPage";
 import FeedbackAdminPage from "./sections/feedback/FeedbackAdminPage";
+import FaquestionsAdminPage from "./sections/faquestions/FaquestionsAdminPage";
 
 export default function AdminPage() {
   return (
@@ -18,6 +19,7 @@ export default function AdminPage() {
           <Route path="/buildings" element={<BuildingsAdminPage />} />
           <Route path="/users" element={<UsersAdminPage />} />
           <Route path="/feedback" element={<FeedbackAdminPage />} />
+          <Route path="/faquestions" element={<FaquestionsAdminPage />} />
         </Routes>
       </div>
     </>

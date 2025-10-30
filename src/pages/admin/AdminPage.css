@@ -1,13 +1,14 @@
 .admin-content {
   flex: 1;
-  padding: 1.5rem;
+  padding: 2.3rem 2.3rem 2rem 2rem;
   overflow-y: auto;
   height: 100%;
-
-  scrollbar-width: none;
+  background: linear-gradient(120deg,#f6f9fb 70%, #e5fdf7 100%);
+  min-height: 100vh;
+  border-radius: 20px 10px 0 0;
+  box-shadow: 0 8px 34px rgba(17,153,142,0.08);
+  scrollbar-width: thin;
+  transition: background 0.3s;
 }
-
 .admin-content::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
-}
+  width: 0.26em; background: transparent; }

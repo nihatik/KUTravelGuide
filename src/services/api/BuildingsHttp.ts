@@ -5,7 +5,7 @@ export interface ServerBuildingDTO {
   buildingType: string;
   street: string;
   position?: { latitude: number; longitude: number } | [number, number];
-  floors: any[];
+  floors: any[] | null;
 }
 
 const BASE_URL = "/api/buildings";

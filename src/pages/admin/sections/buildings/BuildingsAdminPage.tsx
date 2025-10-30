@@ -11,8 +11,6 @@ type FormState = {
   street: string;
   lat?: number;
   lng?: number;
-  openTime?: string;
-  closeTime?: string;
   floorCount: number;
 };
 
@@ -23,8 +21,6 @@ const initialForm: FormState = {
   street: "",
   lat: undefined,
   lng: undefined,
-  openTime: undefined,
-  closeTime: undefined,
   floorCount: 0,
 };
 
@@ -205,14 +201,6 @@ export default function BuildingsAdminPage() {
                 <label>
                   <span>Долгота</span>
                   <input type="number" step="any" value={form.lng ?? ""} onChange={e => setForm(v => ({ ...v, lng: e.target.value === "" ? undefined : Number(e.target.value) }))} />
-                </label>
-                <label>
-                  <span>Время открытия</span>
-                  <input type="datetime-local" value={form.openTime ?? ""} onChange={e => setForm(v => ({ ...v, openTime: e.target.value }))} />
-                </label>
-                <label>
-                  <span>Время закрытия</span>
-                  <input type="datetime-local" value={form.closeTime ?? ""} onChange={e => setForm(v => ({ ...v, closeTime: e.target.value }))} />
                 </label>
                 <label>
                   <span>Кол-во этажей (только отображение)</span>
