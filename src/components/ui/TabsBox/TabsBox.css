@@ -110,3 +110,56 @@
         transform: translateY(0);
     }
 }
+
+/* Mobile layout */
+@media (max-width: 768px) {
+    .tabs-box {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: auto;
+        flex-direction: column;
+        z-index: 9;
+        pointer-events: none; /* чтобы карта была кликабельна под оверлеем, кроме хедера/контента */
+    }
+
+    .tabs-header {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 0;
+        z-index: 11;
+        pointer-events: auto;
+    }
+
+    .tab-btn {
+        width: auto;
+        max-width: none;
+        flex: 1 1 auto;
+        font-size: 14px;
+    }
+    .tab-icon { width: 20px; height: 20px; }
+
+    .tabs-content {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 64px; /* высота хедера */
+        width: auto;
+        transform: translateY(0%);
+        box-shadow: none;
+        pointer-events: auto;
+    }
+
+    /* Свернуть оверлей контента на мобилке */
+    body.mobile-overlay-hidden .tabs-content {
+        transform: translateY(100%);
+        transition: transform 0.35s ease;
+    }
+}

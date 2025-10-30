@@ -21,6 +21,7 @@ export default function TabsBox({ children, defaultTab, onChange }: TabsBoxProps
     setTimeout(() => {
       setContentActive(true);
     }, 300);
+    try { document.body.classList.remove('mobile-overlay-hidden'); } catch {}
   };
 
 

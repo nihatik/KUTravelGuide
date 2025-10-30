@@ -219,6 +219,22 @@
     margin-top: 16px;
 }
 
+.socials {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+}
+
+.socials .icon {
+    color: rgba(var(--kutg-color-for-rgba), 0.8);
+}
+
+.social-logo {
+    width: 24px;
+    height: 24px;
+}
+
 .right-menu a {
     font-family: "Montserrat", sans-serif;
     text-decoration: none;

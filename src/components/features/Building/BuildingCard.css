@@ -86,6 +86,14 @@ li.building-card {
     height: 16px;
 }
 
+.bookmark-btn{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+}
+
 .building-card-text-street {
     color: rgb(0, 0, 0, 0.7);
     font-size: 0.825rem;
@@ -124,7 +132,8 @@ li.building-card {
 }
 
 .building-card-active .join-button:hover {
-    background: rgb(145, 220, 49);
+    background: var(--kutg-color);
+    color: white;
 }
 
 

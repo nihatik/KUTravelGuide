@@ -4,6 +4,7 @@ import BuildingDataManager from '@/services/api/BuildingService';
 import GeoService from '@/services/api/GeoService';
 import { useEffect, useRef, useState } from 'react';
 import BuildingService from '@/services/api/BuildingService';
+import MapService from '@/services/MapService';
 
 const MapStyled = styled(Map)`
   width: 100%;
@@ -17,6 +18,7 @@ const GeocodeMap = () => {
     const handleMapLoad = (map: any) => {
         mapRef.current = map;
         setMapReady(true);
+        MapService.setMap(map);
     };
     const handleClick = (e: any) => {
         console.log(e.get("coords"))

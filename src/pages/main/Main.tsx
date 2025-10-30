@@ -12,11 +12,12 @@ import type Building from '@/types/building/Building';
 import { faBarsStaggered, faBookmark, faCalendarAlt, faFire, faHome, faQuestionCircle, faUniversity } from '@fortawesome/free-solid-svg-icons';
 import "@/assets/styles/Main.css";
 import { HistoryCard } from '@/components/features/Card/HistoryCard';
-import { QuestionCard } from '@/pages/main/leftcontent/help/features/QuestionCard';
 import RoutesService from '@/services/api/RoutesService';
 import Lessons from './leftcontent/lessons/Lessons';
 import KUTGSearch from './features/KUTGSearch';
 import Help from './leftcontent/help/Help';
+import MapService from '@/services/MapService';
+import FavoritesService from '@/services/FavoritesService';
 
 export default function Get() {
   const allBuildings = BuildingService.getAll();
@@ -25,6 +26,7 @@ export default function Get() {
   const [activeBuildingId, setActiveBuildingId] = useState<number | null>(null);
   const [activeBuilding, setActiveBuilding] = useState<Building | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
+  const [bookmarkSearch, setBookmarkSearch] = useState<string>("");
 
   const handleGetLocation = async () => { };
 
@@ -36,6 +38,12 @@ export default function Get() {
       RoutesService.init().then(() => setIsLoaded(true))
     );
   }, []);
+  const [favoritesVersion, setFavoritesVersion] = useState(0);
+  useEffect(() => {
+    const unsubscribe = FavoritesService.subscribe(() => setFavoritesVersion(v => v + 1));
+    return () => { unsubscribe(); };
+  }, []);
+
 
 
   
@@ -65,6 +73,19 @@ export default function Get() {
       )
       .map(b => b.id);
   }, [searchValue, allBuildings]);
+
+  const favoriteBuildingIds = useMemo(() => FavoritesService.getBuildingIds(), [favoritesVersion]);
+  const favoriteBuildings = useMemo(() => {
+    return favoriteBuildingIds
+      .map(id => BuildingService.getById(id))
+      .filter((b): b is Building => Boolean(b));
+  }, [favoriteBuildingIds]);
+
+  const filteredFavoriteBuildings = useMemo(() => {
+    const q = bookmarkSearch.toLowerCase().trim();
+    if (!q) return favoriteBuildings;
+    return favoriteBuildings.filter(b => b.name.toLowerCase().includes(q) || b.description?.toLowerCase().includes(q));
+  }, [bookmarkSearch, favoriteBuildings]);
 
   useEffect(() => {
     if (filteredIds.length === 1) {
@@ -116,6 +137,23 @@ export default function Get() {
           <Tab id='popular' label='Частое' icon={faFire}>
           </Tab>
           <Tab id='bookmarks' label='Закладки' icon={faBookmark}>
+            <div>
+              <KUTGSearch onChange={(e) => setBookmarkSearch(e.target.value)} placeholder={"Поиск по закладкам"} />
+              {!filteredFavoriteBuildings.length && (
+                <div style={{ padding: '16px', color: 'rgba(0,0,0,0.6)' }}>У вас ещё нет закладок.</div>
+              )}
+              <ul id="buildingResults">
+                {filteredFavoriteBuildings.map(building => (
+                  <BuildingCard
+                    key={building.id}
+                    building={building}
+                    shown={true}
+                    active={activeBuildingId === building.id}
+                    onSelect={handleJoin}
+                  />
+                ))}
+              </ul>
+            </div>
           </Tab>
           <Tab id='help' label='Помощь' icon={faQuestionCircle}>
             <Help/>
@@ -137,8 +175,8 @@ export default function Get() {
       {activeBuilding && <CampusMap />}
 
       <RightPanel
-        onZoomIn={() => mapRef.current?.zoomIn()}
-        onZoomOut={() => mapRef.current?.zoomOut()}
+        onZoomIn={() => MapService.zoomIn()}
+        onZoomOut={() => MapService.zoomOut()}
         onGetLocation={handleGetLocation}
       />
     </>
