@@ -6,8 +6,8 @@ import { PlanPoint } from "@/types/point/PlanPoint";
 
 export default class BuildingService {
 
-  public static activeBuilding: Building;
-  public static activeFloor: Floor;
+  public static activeBuilding: Building | null;
+  public static activeFloor: Floor | null;
 
   public static buildings: Building[] = [
     new Building(0, "1 корпус", BuildingType.Campus, [54.8783257, 69.134562], "Абая Кунанбаева, 18", "", "1", [], 2),
@@ -88,6 +88,11 @@ export default class BuildingService {
 
     console.log(this.buildings);
     console.log(this.activeBuilding, this.activeFloor);
+  }
+
+  public static clearActive() {
+    this.activeBuilding = null;
+    this.activeFloor = null;
   }
 
   public static getById(id: number): Building | null {

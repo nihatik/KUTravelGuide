@@ -169,3 +169,10 @@ li.building-card {
 .final-point:hover {
     background: #d0d0d0;
 }
+
+/* Mobile: hide building preview images on very small screens */
+@media (max-width: 360px) {
+    .building-card:not(.active)>img {
+        display: none !important;
+    }
+}

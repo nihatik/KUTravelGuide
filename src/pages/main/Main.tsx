@@ -9,7 +9,7 @@ import BuildingCard from '@/components/features/Building/BuildingCard';
 import '@/assets/styles/LeftPanel.css';
 import { TabsBox, Tab } from '@/components/ui/TabsBox';
 import type Building from '@/types/building/Building';
-import { faBarsStaggered, faBookmark, faCalendarAlt, faFire, faHome, faQuestionCircle, faUniversity } from '@fortawesome/free-solid-svg-icons';
+import { faBarsStaggered, faBookmark, faCalendarAlt, faHome, faQuestionCircle, faUniversity } from '@fortawesome/free-solid-svg-icons';
 import "@/assets/styles/Main.css";
 import { HistoryCard } from '@/components/features/Card/HistoryCard';
 import { QuestionCard } from '@/pages/main/leftcontent/help/features/QuestionCard';
@@ -27,6 +27,12 @@ export default function Get() {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const handleGetLocation = async () => { };
+
+  const handleBackToMap = () => {
+    BuildingService.clearActive();
+    setActiveBuilding(null);
+    setActiveBuildingId(null);
+  };
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -80,17 +86,6 @@ export default function Get() {
     <>
       <div id="left-panel">
         <TabsBox defaultTab='main'>
-          <Tab id='main' label='Главная' icon={faHome}>
-            <div>
-              <KUTGSearch/>
-              <ul>
-                <HistoryCard
-                  name="1 корпус"
-                  address="ун. им. М. Козыбаева, ул. Жабаева 1000">
-                </HistoryCard>
-              </ul>
-            </div>
-          </Tab>
           <Tab id='university' label='Здания' icon={faUniversity}>
             <div>
               <KUTGSearch onChange={handleInput} />
@@ -110,12 +105,33 @@ export default function Get() {
               </ul>
             </div>
           </Tab>
-          <Tab id='schedule' label='Учеба' icon={faCalendarAlt}>
+          <Tab id='schedule' label='Расписание' icon={faCalendarAlt}>
             <Lessons/>
           </Tab>
+<<<<<<< Updated upstream
           <Tab id='popular' label='Частое' icon={faFire}>
           </Tab>
           <Tab id='bookmarks' label='Закладки' icon={faBookmark}>
+=======
+          <Tab id='bookmarks' label='Избранное' icon={faBookmark}>
+            <div>
+              <KUTGSearch onChange={(e) => setBookmarkSearch(e.target.value)} placeholder={"Поиск по закладкам"} />
+              {!filteredFavoriteBuildings.length && (
+                <div style={{ padding: '16px', color: 'rgba(0,0,0,0.6)' }}>У вас ещё нет закладок.</div>
+              )}
+              <ul id="buildingResults">
+                {filteredFavoriteBuildings.map(building => (
+                  <BuildingCard
+                    key={building.id}
+                    building={building}
+                    shown={true}
+                    active={activeBuildingId === building.id}
+                    onSelect={handleJoin}
+                  />
+                ))}
+              </ul>
+            </div>
+>>>>>>> Stashed changes
           </Tab>
           <Tab id='help' label='Помощь' icon={faQuestionCircle}>
             <Help/>
@@ -140,6 +156,7 @@ export default function Get() {
         onZoomIn={() => mapRef.current?.zoomIn()}
         onZoomOut={() => mapRef.current?.zoomOut()}
         onGetLocation={handleGetLocation}
+        onBackToMap={handleBackToMap}
       />
     </>
   );

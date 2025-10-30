@@ -14,6 +14,17 @@ export default function TabsBox({ children, defaultTab, onChange }: TabsBoxProps
   const [contentActive, setContentActive] = useState(false);
 
   const handleSelect = (tabId: string) => {
+    // Если нажали на уже активный таб — на мобилке сворачиваем/разворачиваем оверлей
+    if (tabId === activeTab) {
+      try {
+        const hidden = document.body.classList.toggle('mobile-overlay-hidden');
+        setContentActive(!hidden);
+      } catch {
+        // noop
+      }
+      return;
+    }
+
     setActiveTab(tabId);
     onChange?.(tabId);
 
