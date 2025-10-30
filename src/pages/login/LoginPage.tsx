@@ -46,39 +46,45 @@ export default function LoginPage() {
 
     return (
         <div className="login-page">
-            <img src="assets/textlogo.png" alt="Logo" />
+            <div className="login-container">
+                <div className="hero">
+                    <div
+                        className="hero-logo"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => navigate('/')}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/'); }}
+                    >KU</div>
+                    <h1>Путеводитель</h1>
+                    <p>Быстрый доступ к корпусам и сервисам</p>
+                </div>
 
-            <span>
-                Для входа в систему NKU Travel Guide<br />
-                пожалуйста, введите ваш логин
-            </span>
+                <div className="auth-card">
+                    <h2>Авторизация</h2>
 
-            <div className="login-inputs">
-                <input
-                    className="kutg-input"
-                    type="text"
-                    placeholder="Введите ваш логин"
-                    value={login}
-                    onChange={(e) => setLogin(e.target.value)}
-                />
-                <input
-                    className="kutg-input"
-                    type="password"
-                    placeholder="Введите ваш пароль"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button className="kutg-button" onClick={handleLogin}>
-                    Войти
-                </button>
+                    <div className="login-inputs">
+                        <input
+                            className="kutg-input"
+                            type="text"
+                            placeholder="Логин"
+                            value={login}
+                            onChange={(e) => setLogin(e.target.value)}
+                        />
+                        <input
+                            className="kutg-input"
+                            type="password"
+                            placeholder="Пароль"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <button className="kutg-button primary" onClick={handleLogin}>
+                            Войти
+                        </button>
+                    </div>
+
+                    {error && <p className="error-text">{error}</p>}
+                </div>
             </div>
-
-            {error && <p className="error-text">{error}</p>}
-
-            <span>
-                NKU Travel Guide<br />
-                Лицензионное соглашение, политика конфиденциальности
-            </span>
         </div>
     );
 }

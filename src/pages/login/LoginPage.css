@@ -1,49 +1,106 @@
-.login-page .kutg-input {
-    max-width: 100%;
-    width: 320px;
-    height: 48px;
-
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    text-align: center;
-    transition: 0.3s;
-    background: #7CE1EC;
-    border: 1px solid #000000;
-    border-radius: 16px;
-}
-
+/* Background */
 .login-page {
+    min-height: 100vh;
     width: 100vw;
-    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(25,150,167,0.25) 0%, rgba(25,150,167,0.05) 60%, #ffffff 100%);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 1100px;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 80px;
+}
+
+/* Hero left */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: center;
+    gap: 16px;
+}
+.hero-logo {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--kutg-color);
+    color: #fff;
+    font-weight: 700;
+    font-size: 28px;
+    cursor: pointer;
+    user-select: none;
+}
+.hero h1 { font-size: 36px; color: #000; margin: 0; }
+.hero p { font-size: 18px; color: rgba(0,0,0,0.7); margin: 0; }
+
+/* Auth card */
+.auth-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.auth-card h2 { margin: 0 0 16px 0; font-size: 28px; color: #000; text-align: center; }
+
+.login-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.login-inputs button {
+    margin-top: 15px;
+}
+
+.kutg-input {
+    height: 48px;
+    border-radius: 12px;
+    padding: 0 14px;
     font-size: 16px;
-    color: #919191;
-    background: #C3F9FF;
-    height: 100vh;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-    gap: 32px;
+    border: 1.5px solid rgba(25,150,167,0.6);
+    outline: none;
+}
+.kutg-input:focus {
+    box-shadow: 0 0 0 3px rgba(25,150,167,0.15);
+    border-color: var(--kutg-color);
 }
 
-
-.login-page .login-inputs {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 32px;
+.kutg-button {
+    height: 48px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
 }
+.kutg-button.primary { background: var(--kutg-color); color: #fff; }
+.kutg-button.ghost { background: #f1f1f1; color: rgba(0,0,0,.5); cursor: not-allowed; }
 
-.login-page  img {
-    max-width: 480px;
-    width: 90%;
-}
+.error-text { color: #d64545; margin-top: 8px; text-align: center; }
 
-@media screen and (min-width: 480px) {
-    .login-page .kutg-input {
-        width: 400px;
-    }
+/* Desktop 2-column */
+@media (max-width: 460px) {
+
+    .hero h1 { font-size: 20px; }
+    .hero p { font-size: 16px; }
+
+    .auth-card { width: 350px; }
+    .auth-card h2 { font-size: 20px; }
 }

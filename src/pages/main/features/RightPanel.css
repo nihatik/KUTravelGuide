@@ -65,6 +65,10 @@
     width: 100%;
 }
 
+#right-panel .right-buttons svg path {
+    fill: #1996a7;
+}
+
 .right-menu {
     width: 320px;
     display: flex;
@@ -90,7 +94,7 @@
     padding: 16px 0px;
     display: flex;
     align-items: center;
-    justify-content: left;
+    justify-content: space-between;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     margin-bottom: 4px;
 }
@@ -106,6 +110,19 @@
     font-weight: 600;
     margin-left: 8px;
 }
+
+.logo-close-btn {
+    background: transparent;
+    border: none;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+.logo-close-btn:hover { background: rgba(0,0,0,0.05); }
 
 .profile {
     display: flex;
@@ -255,4 +272,46 @@
     font-size: 14px;
     line-height: 20px;
     color: rgba(0, 0, 0, 0.6);
+}
+
+/* Full-width right panel on very small screens */
+@media (max-width: 420px) {
+    #right-panel {
+        transform: translateX(100vw);
+    }
+    #right-panel.active{
+        transform: translateX(0);
+    }
+    .right-menu {
+        width: 100vw;
+        border-radius: 0; /* во всю ширину без скругления слева */
+        padding: 0 16px;
+    }
+
+     /* Разделитель между профилем и ссылками (адаптация под фирменный стиль) */
+    hr.separator:after {
+        background: none repeat scroll var(--kutg-color);
+        content: "";
+        height: 5px;
+        margin: -3px auto auto 0;
+        position: absolute;
+        transform: rotate(-45deg);
+        width: 5px;
+
+        }
+    hr.separator {
+        border-top: 0.5px solid var(--kutg-color);
+        width: 100%;
+        clear: both;
+        }  
+
+     /* Крупнее шрифт ссылок на мобильном */
+     .right-menu-link a { font-size: 18px; }
+}
+
+/* На мобильных: прячем кнопки зума/локации, когда открыт таб-контент (body без класса mobile-overlay-hidden) */
+@media (max-width: 768px) {
+    body:not(.mobile-overlay-hidden) #right-panel .center {
+        display: none;
+    }
 }

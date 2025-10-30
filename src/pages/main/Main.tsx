@@ -7,7 +7,8 @@ import CampusMap from '@/pages/main/leftcontent/buildings/features/BuildingMap';
 import BuildingService from '@/services/api/BuildingService';
 import '@/assets/styles/LeftPanel.css';
 import { TabsBox, Tab } from '@/components/ui/TabsBox';
-import { faBarsStaggered, faBookmark, faCalendarAlt, faQuestionCircle, faUniversity } from '@fortawesome/free-solid-svg-icons';
+import type Building from '@/types/building/Building';
+import { faBarsStaggered, faBookmark, faCalendarAlt, faFire, faHome, faQuestionCircle, faUniversity } from '@fortawesome/free-solid-svg-icons';
 import "@/assets/styles/Main.css";
 import Lessons from './leftcontent/lessons/Lessons';
 import Help from './leftcontent/help/Help';
@@ -23,6 +24,25 @@ export default function Get() {
 
   const handleGetLocation = async () => { };
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
+
+  useEffect(() => {
+    BuildingService.init().then(() =>
+      RoutesService.init().then(() => setIsLoaded(true))
+    );
+  }, []);
+
+
+  
+  const handleJoin = (id: number) => {
+    const newBuilding = BuildingService.getById(id);
+    if (newBuilding) {
+      BuildingService.setActive(newBuilding);
+      setActiveBuildingId(newBuilding.id);
+    }
+  };
+
   useEffect(() => {
     setActiveBuilding(BuildingService.activeBuilding)
   }, [BuildingService.activeBuilding])
@@ -37,8 +57,9 @@ export default function Get() {
           <Tab id='schedule' label='Расписание' icon={faCalendarAlt}>
             <Lessons/>
           </Tab>
-          <Tab id='bookmarks' label='Избранное' icon={faBookmark}>
-            <Bookmarks/>
+          <Tab id='popular' label='Частое' icon={faFire}>
+          </Tab>
+          <Tab id='bookmarks' label='Закладки' icon={faBookmark}>
           </Tab>
           <Tab id='help' label='Помощь' icon={faQuestionCircle}>
             <Help/>
@@ -63,6 +84,7 @@ export default function Get() {
         onZoomIn={() => mapRef.current?.zoomIn()}
         onZoomOut={() => mapRef.current?.zoomOut()}
         onGetLocation={handleGetLocation}
+        onBackToMap={handleBackToMap}
       />
     </>
   );
