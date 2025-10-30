@@ -121,7 +121,7 @@ const BuildingMap = forwardRef(({ points: controlledPoints }: BuildingMapProps, 
         ) : (
 
           <>
-            {isLoaded && BuildingService.activeFloor && BuildingService.activeFloor.planPoints
+            {isLoaded && BuildingService.activeFloor != null && BuildingService.activeFloor.planPoints
               ? BuildingService.activeFloor.planPoints.map((p) =>
                 p.parentId ? (
                   <WallBetweenPoints

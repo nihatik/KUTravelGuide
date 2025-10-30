@@ -110,8 +110,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-<<<<<<< Updated upstream
-=======
 }
 
 /* Mobile layout */
@@ -168,5 +166,4 @@
         transform: translateY(100%);
         transition: transform 0.35s ease;
     }
->>>>>>> Stashed changes
 }

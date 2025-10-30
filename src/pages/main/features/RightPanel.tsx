@@ -1,6 +1,6 @@
 import "./RightPanel.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCircleHalfStroke, faComments, faDoorOpen, faLanguage, faLocationDot, faMinus, faMobile, faPlus, faUniversity, faUserTie } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faArrowLeft, faCircleHalfStroke, faComments, faDoorOpen, faLanguage, faLocationDot, faMap, faMinus, faMobile, faPlus, faUniversity, faUserTie, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 
 type RightPanelProps = {
@@ -9,10 +9,6 @@ type RightPanelProps = {
   onGetLocation: () => void;
   onBackToMap?: () => void;
 };
-
-<<<<<<< Updated upstream
-export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation }: RightPanelProps) {
-=======
 const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 512 512" {...props}><path fill="#1996a7" d="M389.2 48h70.7L327.3 224.2 487 464H344.6L241 311.7 123.5 464H52.7L202 277.4 50 48h145.1l92.1 132.3L389.2 48ZM364.4 421.8h39.1L151.1 88h-42L364.4 421.8Z"/></svg>
 );
@@ -21,10 +17,8 @@ const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 512 512" {...props}><path fill="#1996a7" d="M412 129.3c-23.8-17.8-40.6-43.8-46.6-73.9h-69.9v330.6c0 35.9-29.1 65-65 65s-65-29.1-65-65 29.1-65 65-65c6.8 0 13.4 1 19.5 3V263.8c-6.4-.9-13-1.4-19.5-1.4-71.5 0-129.5 58-129.5 129.5S159 521.4 230.5 521.4 360 463.4 360 391.9V206.2c26.9 19.8 60 31.6 96 31.6v-73.2c-15.8-.1-31-5.1-44-13.3Z"/></svg>
 );
 
-export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackToMap }: RightPanelProps) {
->>>>>>> Stashed changes
+export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackToMap }: RightPanelProps) { 
   const [menuActive, setMenuActive] = useState(false);
-
   const [user, setUser] = useState({ name: "Гость", group: null as string | null, admin: null as boolean | null });
 
   useEffect(() => {

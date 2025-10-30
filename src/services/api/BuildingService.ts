@@ -6,7 +6,7 @@ import { BuildingsHttp, type ServerBuildingDTO } from "./BuildingsHttp";
 export default class BuildingService {
 
   public static activeBuilding: ServerBuildingDTO | null = null;
-  public static activeFloor: Floor | null = null;
+  public static activeFloor: Floor;
 
   public static buildings: ServerBuildingDTO[] = [];
 
@@ -82,7 +82,6 @@ export default class BuildingService {
 
   public static clearActive() {
     this.activeBuilding = null;
-    this.activeFloor = null;
   }
 
   public static getById(id: number): ServerBuildingDTO | null {
