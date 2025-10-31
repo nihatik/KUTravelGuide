@@ -20,7 +20,7 @@ const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackToMap }: RightPanelProps) { 
   const [menuActive, setMenuActive] = useState(false);
-  const [user, setUser] = useState({ name: "Гость", group: null as string | null, admin: null as boolean | null });
+  const [user, setUser] = useState({ name: "Гость", group: null as string | null, role: null as string | null });
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [fbMessage, setFbMessage] = useState("");
   const [fbSuccess, setFbSuccess] = useState<string|null>(null);
@@ -37,7 +37,7 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackT
   const quitAccount = (e: React.MouseEvent) => {
     e.preventDefault();
     localStorage.removeItem("user");
-    setUser({ name: "Гость", group: null, admin: null });
+    setUser({ name: "Гость", group: null, role: null });
   };
 
   const joinAccount = (e: React.MouseEvent) => {
@@ -121,14 +121,14 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackT
                 <FontAwesomeIcon className="fa-big icon" icon={faDoorOpen} />
                 <a href="#">Войти в аккаунт</a>
               </div>
-            }
+            } 
           </div>
 
             <hr className="separator" />
 
           <div className="right-menu-links">
 
-            {user.group && user.admin &&
+            {user.group && user.role?.toLowerCase() === "admin" &&
               <div className="right-menu-link">
                 <FontAwesomeIcon className="fa-big icon" icon={faUserTie} />
                 <a href="/admin">Админ панель</a>

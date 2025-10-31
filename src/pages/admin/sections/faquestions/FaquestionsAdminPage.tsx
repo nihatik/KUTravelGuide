@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { QuestionsHttp, type QuestionDTO } from "@/services/api/QuestionsHttp";
-import "../feedback/FeedbackAdminPage.css";
+import "./FaquestionsAdminPage.css";
 // TODO: вынести css если нужно
 
 export default function FaquestionsAdminPage() {

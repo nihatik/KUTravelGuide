@@ -1,11 +1,13 @@
 export interface ServerBuildingDTO {
-  id: number;
+  id: number | null;
   name: string;
   description: string;
   buildingType: string;
   address: string;
-  position?: { latitude: number; longitude: number } | [number, number];
+  latitude: number;
+  longitude: number;
   floors: any[] | null;
+  previewImages: string[];
 }
 
 const BASE_URL = "/api/buildings";
@@ -17,6 +19,12 @@ async function handleResponse<T>(res: Response): Promise<T> {
   }
   return (await res.json()) as T;
 }
+function getFormData(payload: ServerBuildingDTO, imageFile?: File): FormData {
+  const formData = new FormData();
+  formData.append("data", new Blob([JSON.stringify(payload)], { type: "application/json" }));
+  if (imageFile) formData.append("image", imageFile);
+  return formData;
+}
 
 export const BuildingsHttp = {
   async list(): Promise<ServerBuildingDTO[]> {
@@ -24,22 +32,22 @@ export const BuildingsHttp = {
     return handleResponse<ServerBuildingDTO[]>(res);
   },
 
-  async create(payload: ServerBuildingDTO): Promise<ServerBuildingDTO> {
+  async create(payload: ServerBuildingDTO, imageFile?: File): Promise<ServerBuildingDTO> {
+    const formData = getFormData(payload, imageFile);
     const res = await fetch(BASE_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      body: formData,
       credentials: "include",
-      body: JSON.stringify(payload),
     });
     return handleResponse<ServerBuildingDTO>(res);
   },
 
-  async update(id: number, payload: ServerBuildingDTO): Promise<ServerBuildingDTO> {
+  async update(id: number, payload: ServerBuildingDTO, imageFile?: File): Promise<ServerBuildingDTO> {
+    const formData = getFormData(payload, imageFile);
     const res = await fetch(`${BASE_URL}/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      body: formData,
       credentials: "include",
-      body: JSON.stringify(payload),
     });
     return handleResponse<ServerBuildingDTO>(res);
   },

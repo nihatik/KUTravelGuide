@@ -23,19 +23,19 @@ type BuildingCardProps = {
 export default function BuildingCard({ building, shown, active, onSelect }: BuildingCardProps) {
   const mapRef = useRef<any>(null);
   const [localActive, setLocalActive] = useState(false);
-  const [imgSrc, setImgSrc] = useState(`/assets/buildings/${building.name}/preview.jpg`);
+  const [imgSrc] = useState(`${import.meta.env.VITE_API_URL}${building.previewImages[0]}`);
 
   const isActive = active !== undefined ? active : localActive;
 
   const handleJoin = () => {
     console.log(`Вход в здание: ${building.name}`);
-    BuildingService.setActiveById(building.id);
+    BuildingService.setActiveById(building.id ? building.id : -1);
   };
 
   const handleBookmark = () => {
     const storedBookmarks = localStorage.getItem(LOCAL_STORAGE_KEY);
     let bookmarks: { id: number; name: string; address: string }[] = storedBookmarks ? JSON.parse(storedBookmarks) : [];
-
+    if (building.id === null) return;
     if (!bookmarks.find(b => b.id === building.id)) {
       bookmarks = [
         { id: building.id, name: building.name, address: building.address || "" },
@@ -52,24 +52,18 @@ export default function BuildingCard({ building, shown, active, onSelect }: Buil
     <>
       <Card className={`building-card ${shown ? "show" : ""} ${isActive ? "active" : ""}`}
         onClick={() => {
-          onSelect?.(building.id);
+          onSelect?.(building.id ? building.id : -1);
           if (active === undefined) setLocalActive(!localActive);
         }}>
         <img
           className="building-card-img"
           src={imgSrc}
           alt={building.name}
-          onError={() => {
-            if (!imgSrc.endsWith(".png")) {
-              setImgSrc(`/assets/buildings/${building.name}/preview.png`);
-            }
-          }}
         />
         <div className="building-card-right column">
           <div>
             <span className="building-card-text-head">
               <p>{building.name}</p>
-              <img src={"/assets/type" + building.buildingType.toLowerCase() + ".png"}></img>
             </span>
             <p className="building-card-text-address">{building.address}</p>
           </div>
@@ -85,8 +79,7 @@ export default function BuildingCard({ building, shown, active, onSelect }: Buil
               </svg> {building.floors && building.floors.length + " / " + building.floors.length}
             </span>
             <span className="building-card-working-hours">
-              <FontAwesomeIcon icon={faClock} style={{ color: 'gray' }} />
-              13:00 - 18:00
+              <img style={{width: 16}} src={"/assets/type" + building.buildingType.toLowerCase() + ".png"}></img>
             </span>
           </div>
         </div>

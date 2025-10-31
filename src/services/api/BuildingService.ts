@@ -12,6 +12,7 @@ export default class BuildingService {
 
   public static async init() {
     this.buildings = await BuildingsHttp.list();
+    console.log(this.buildings)
     await this.loadData();
   }
 

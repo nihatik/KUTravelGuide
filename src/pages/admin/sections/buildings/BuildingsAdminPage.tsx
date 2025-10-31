@@ -3,25 +3,16 @@ import { BuildingsHttp, type ServerBuildingDTO } from "@/services/api/BuildingsH
 import { BuildingType } from "@/types/building/BuildingType";
 import "./BuildingsAdminPage.css";
 
-type FormState = {
-  id?: number;
-  name: string;
-  description: string;
-  buildingType: string;
-  address: string;
-  lat?: number;
-  lng?: number;
-  floorCount: number;
-};
-
-const initialForm: FormState = {
+const initialForm: ServerBuildingDTO = {
+  id: null,
   name: "",
   description: "",
   buildingType: BuildingType.Campus,
   address: "",
-  lat: undefined,
-  lng: undefined,
-  floorCount: 0,
+  latitude: 0,
+  longitude: 0,
+  floors: null,
+  previewImages: [],
 };
 
 export default function BuildingsAdminPage() {
@@ -29,7 +20,8 @@ export default function BuildingsAdminPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [form, setForm] = useState<FormState>(initialForm);
+  const [form, setForm] = useState<ServerBuildingDTO>(initialForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const buildingTypeOptions = useMemo(
     () => [
@@ -53,7 +45,6 @@ export default function BuildingsAdminPage() {
       setLoading(true);
       setError(null);
       const data = await BuildingsHttp.list();
-      console.log(data)
       setItems(data);
     } catch (e: any) {
       setError(e?.message || "Не удалось загрузить здания");
@@ -68,41 +59,19 @@ export default function BuildingsAdminPage() {
   }
 
   function openEdit(b: ServerBuildingDTO) {
-    const latlng = Array.isArray(b.position)
-      ? { lat: b.position[0], lng: b.position[1] }
-      : (b.position as any);
-    setForm({
-      id: b.id,
-      name: b.name,
-      description: b.description || "",
-      buildingType: b.buildingType,
-      address: b.address || "",
-      lat: latlng?.lat,
-      lng: latlng?.lng,
-      floorCount: 0,
-    });
+    setForm(b);
     setIsModalOpen(true);
   }
 
   async function save() {
-    const payload: ServerBuildingDTO = {
-      name: form.name.trim(),
-      description: form.description?.trim() || "",
-      buildingType: form.buildingType,
-      address: form.address?.trim() || "",
-      position:
-        form.lat != null && form.lng != null
-          ? { lat: form.lat, lng: form.lng }
-          : undefined
-    };
 
     try {
       setLoading(true);
       setError(null);
       if (form.id) {
-        await BuildingsHttp.update(form.id, payload);
+        await BuildingsHttp.update(form.id, form, imageFile ?? undefined);
       } else {
-        await BuildingsHttp.create(payload);
+        await BuildingsHttp.create(form, imageFile ?? undefined);
       }
       setIsModalOpen(false);
       await load();
@@ -140,9 +109,6 @@ export default function BuildingsAdminPage() {
 
       <div className="list">
         {items.map((b) => {
-          const latlng = Array.isArray(b.position)
-            ? { lat: b.position[0], lng: b.position[1] }
-            : (b.position as any);
           return (
             <div key={b.id} className="building-admin-card">
               <div className="title-row">
@@ -151,14 +117,14 @@ export default function BuildingsAdminPage() {
               </div>
               <div className="meta">
                 <div><b>Адрес:</b> {b.address || "—"}</div>
-                <div><b>Координаты:</b> {latlng ? `${latlng.lat}, ${latlng.lng}` : "—"}</div>
+                <div><b>Координаты:</b> {`${b.latitude}, ${b.longitude}`}</div>
                 <div><b>Этажей:</b> {/* отображаем только количество этажей на клиенте */}
                   {Array.isArray((b as any).floors) ? (b as any).floors.length : (b as any).floorCount ?? "—"}
                 </div>
               </div>
               <div className="actions">
                 <button onClick={() => openEdit(b)}>Изменить</button>
-                <button className="danger" onClick={() => remove(b.id)}>Удалить</button>
+                <button className="danger" onClick={() => remove(b.id ? b.id : -1)}>Удалить</button>
               </div>
             </div>
           );
@@ -196,15 +162,23 @@ export default function BuildingsAdminPage() {
                 </label>
                 <label>
                   <span>Широта</span>
-                  <input type="number" step="any" value={form.lat ?? ""} onChange={e => setForm(v => ({ ...v, lat: e.target.value === "" ? undefined : Number(e.target.value) }))} />
+                  <input type="number" step="any" value={form.latitude ?? ""} onChange={e => setForm(v => ({ ...v, latitude: e.target.value === "" ? 0 : Number(e.target.value) }))} />
                 </label>
                 <label>
                   <span>Долгота</span>
-                  <input type="number" step="any" value={form.lng ?? ""} onChange={e => setForm(v => ({ ...v, lng: e.target.value === "" ? undefined : Number(e.target.value) }))} />
+                  <input type="number" step="any" value={form.longitude ?? ""} onChange={e => setForm(v => ({ ...v, longitude: e.target.value === "" ? 0 : Number(e.target.value) }))} />
                 </label>
                 <label>
                   <span>Кол-во этажей (только отображение)</span>
-                  <input type="number" min={0} value={form.floorCount} onChange={e => setForm(v => ({ ...v, floorCount: Number(e.target.value) }))} />
+                  <input type="number" min={0} value={form.floors?.length ?? 0} onChange={e => setForm(v => ({ ...v, floors: Array.from({ length: Number(e.target.value) }) }))} />
+                </label>
+                <label className="full">
+                  <span>Изображение (превью)</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={e => setImageFile(e.target.files ? e.target.files[0] : null)}
+                  />
                 </label>
               </div>
             </div>

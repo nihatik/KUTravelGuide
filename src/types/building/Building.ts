@@ -1,5 +1,4 @@
 
-import type { DestinationPoint, PlanPoint, RoutePoint } from "../point";
 import type { BuildingType } from "./BuildingType";
 import type Floor from "./Floor";
 
