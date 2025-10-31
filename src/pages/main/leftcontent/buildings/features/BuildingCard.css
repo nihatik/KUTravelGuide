@@ -54,7 +54,7 @@ li.building-card {
     font-size: 16px;
 }
 
-.building-card.active .builing-card-text-street {
+.building-card.active .builing-card-text-address {
     font-size: 14px;
 }
 
@@ -85,7 +85,7 @@ li.building-card {
     height: 16px;
 }
 
-.building-card-text-street {
+.building-card-text-address {
     color: rgb(0, 0, 0, 0.7);
     font-size: 0.825rem;
     font-weight: 400;

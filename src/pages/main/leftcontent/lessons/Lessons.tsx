@@ -20,7 +20,6 @@ export default function Lessons() {
 
     useEffect(() => {
         const stored = localStorage.getItem("user");
-        console.log("Stored user:", stored);
         if (stored) {
             try {
                 const parsed = JSON.parse(stored);

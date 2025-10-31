@@ -38,7 +38,7 @@ export default function BuildingCard({ building, shown, active, onSelect }: Buil
 
     if (!bookmarks.find(b => b.id === building.id)) {
       bookmarks = [
-        { id: building.id, name: building.name, address: building.street || "" },
+        { id: building.id, name: building.name, address: building.address || "" },
         ...bookmarks
       ].slice(0, 20);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(bookmarks));
@@ -71,7 +71,7 @@ export default function BuildingCard({ building, shown, active, onSelect }: Buil
               <p>{building.name}</p>
               <img src={"/assets/type" + building.buildingType.toLowerCase() + ".png"}></img>
             </span>
-            <p className="building-card-text-street">{building.street}</p>
+            <p className="building-card-text-address">{building.address}</p>
           </div>
           <div className="row gap8 building-card-right-bottom">
             <span className="building-card-floor-count">

@@ -3,7 +3,7 @@ export interface ServerBuildingDTO {
   name: string;
   description: string;
   buildingType: string;
-  street: string;
+  address: string;
   position?: { latitude: number; longitude: number } | [number, number];
   floors: any[] | null;
 }

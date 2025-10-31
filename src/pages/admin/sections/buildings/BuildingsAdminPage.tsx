@@ -8,7 +8,7 @@ type FormState = {
   name: string;
   description: string;
   buildingType: string;
-  street: string;
+  address: string;
   lat?: number;
   lng?: number;
   floorCount: number;
@@ -18,7 +18,7 @@ const initialForm: FormState = {
   name: "",
   description: "",
   buildingType: BuildingType.Campus,
-  street: "",
+  address: "",
   lat: undefined,
   lng: undefined,
   floorCount: 0,
@@ -76,7 +76,7 @@ export default function BuildingsAdminPage() {
       name: b.name,
       description: b.description || "",
       buildingType: b.buildingType,
-      street: b.street || "",
+      address: b.address || "",
       lat: latlng?.lat,
       lng: latlng?.lng,
       floorCount: 0,
@@ -89,7 +89,7 @@ export default function BuildingsAdminPage() {
       name: form.name.trim(),
       description: form.description?.trim() || "",
       buildingType: form.buildingType,
-      street: form.street?.trim() || "",
+      address: form.address?.trim() || "",
       position:
         form.lat != null && form.lng != null
           ? { lat: form.lat, lng: form.lng }
@@ -150,7 +150,7 @@ export default function BuildingsAdminPage() {
                 <div className="type">{b.buildingType}</div>
               </div>
               <div className="meta">
-                <div><b>Адрес:</b> {b.street || "—"}</div>
+                <div><b>Адрес:</b> {b.address || "—"}</div>
                 <div><b>Координаты:</b> {latlng ? `${latlng.lat}, ${latlng.lng}` : "—"}</div>
                 <div><b>Этажей:</b> {/* отображаем только количество этажей на клиенте */}
                   {Array.isArray((b as any).floors) ? (b as any).floors.length : (b as any).floorCount ?? "—"}
@@ -192,7 +192,7 @@ export default function BuildingsAdminPage() {
                 </label>
                 <label className="full">
                   <span>Адрес</span>
-                  <input value={form.street} onChange={e => setForm(v => ({ ...v, street: e.target.value }))} />
+                  <input value={form.address} onChange={e => setForm(v => ({ ...v, address: e.target.value }))} />
                 </label>
                 <label>
                   <span>Широта</span>

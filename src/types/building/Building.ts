@@ -9,7 +9,7 @@ export default class Building {
     public name: string,
     public type: BuildingType,
     public position: [number, number],
-    public street: string,
+    public address: string,
     public description: string,
     public keyPath: string,
     public floors: Floor[],

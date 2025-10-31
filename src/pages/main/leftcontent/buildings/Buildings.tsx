@@ -62,7 +62,7 @@ export default function Buildings() {
 
             setSearchHistory(prev => {
                 if (prev.find(b => b.id === building.id)) return prev;
-                return [{ id: building.id, name: building.name, address: building.street || "" }, ...prev].slice(0, 5);
+                return [{ id: building.id, name: building.name, address: building.address || "" }, ...prev].slice(0, 5);
             });
         }
     };
