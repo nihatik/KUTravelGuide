@@ -2,8 +2,6 @@ import "./BuildingCard.css";
 import { useRef, useState } from "react";
 import BuildingService from "@/services/api/BuildingService";
 import { Card } from "../../../../../components/features/Card/Card";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { Utils } from "@/utils/Utils";
 import type { ServerBuildingDTO } from "@/services/api/BuildingsHttp";
 

@@ -56,7 +56,7 @@ export default function RightPanel({ onZoomIn, onZoomOut, onGetLocation, onBackT
     setFbLoading(true);
     setFbSuccess(null);
     try {
-      await FeedbackHttp.create({ senderLogin: user.name, message: fbMessage.trim() });
+      await FeedbackHttp.send({ senderLogin: user.name, message: fbMessage.trim() });
       setFbSuccess("Спасибо за обратную связь!");
       setFbMessage("");
       setTimeout(() => setFeedbackOpen(false), 2000);

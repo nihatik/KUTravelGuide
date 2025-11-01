@@ -14,6 +14,7 @@ import Help from './leftcontent/help/Help';
 import Buildings from './leftcontent/buildings/Buildings';
 import type { ServerBuildingDTO } from '@/services/api/BuildingsHttp';
 import Bookmarks from './leftcontent/bookmarks/Bookmarks';
+import FeedbackForm from './features/popup/FeedbackForm';
 
 export default function Get() {
 
@@ -69,6 +70,7 @@ export default function Get() {
         onGetLocation={handleGetLocation}
         onBackToMap={handleBackToMap}
       />
+      <FeedbackForm />
     </>
   );
 }
